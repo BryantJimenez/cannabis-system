@@ -72,4 +72,17 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::put('/{strain:slug}/activar', 'StrainController@activate')->name('strains.activate')->middleware('permission:strains.active');
 		Route::put('/{strain:slug}/desactivar', 'StrainController@deactivate')->name('strains.deactivate')->middleware('permission:strains.deactive');
 	});
+
+	// Rooms
+	Route::prefix('cuartos')->group(function () {
+		Route::get('/', 'RoomController@index')->name('rooms.index')->middleware('permission:rooms.index');
+		Route::get('/registrar', 'RoomController@create')->name('rooms.create')->middleware('permission:rooms.create');
+		Route::post('/', 'RoomController@store')->name('rooms.store')->middleware('permission:rooms.create');
+		Route::get('/{room:slug}', 'RoomController@show')->name('rooms.show')->middleware('permission:rooms.show');
+		Route::get('/{room:slug}/editar', 'RoomController@edit')->name('rooms.edit')->middleware('permission:rooms.edit');
+		Route::put('/{room:slug}', 'RoomController@update')->name('rooms.update')->middleware('permission:rooms.edit');
+		Route::delete('/{room:slug}', 'RoomController@destroy')->name('rooms.delete')->middleware('permission:rooms.delete');
+		Route::put('/{room:slug}/activar', 'RoomController@activate')->name('rooms.activate')->middleware('permission:rooms.active');
+		Route::put('/{room:slug}/desactivar', 'RoomController@deactivate')->name('rooms.deactivate')->middleware('permission:rooms.deactive');
+	});
 });

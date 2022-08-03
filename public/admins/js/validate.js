@@ -318,4 +318,22 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	// Rooms
+	$("button[action='room']").on("click",function(){
+		$("#formRoom").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 2,
+					maxlength: 191
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='room']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
 });

@@ -53,5 +53,17 @@ class PermissionsSeeder extends Seeder
             Permission::create(['name' => 'strains.active']);
             Permission::create(['name' => 'strains.deactive']);
         }
+
+        // Room Permissions
+        $permission=Permission::where('name', 'rooms.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'rooms.index']);
+            Permission::create(['name' => 'rooms.create']);
+            Permission::create(['name' => 'rooms.show']);
+            Permission::create(['name' => 'rooms.edit']);
+            Permission::create(['name' => 'rooms.delete']);
+            Permission::create(['name' => 'rooms.active']);
+            Permission::create(['name' => 'rooms.deactive']);
+        }
     }
 }
