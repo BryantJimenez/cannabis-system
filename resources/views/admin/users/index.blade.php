@@ -53,7 +53,7 @@
 									@foreach($users as $user)
 									<tr>
 										<td>{{ $loop->iteration }}</td>
-										<td class="d-flex">
+										<td class="d-flex align-items-center">
 											<img src="{{ image_exist('/admins/img/users/', $user->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $user->name." ".$user->lastname }}" title="{{ $user->name." ".$user->lastname }}"> {{ $user->name." ".$user->lastname }}
 										</td>
 										<td>{{ $user->email }}</td>
@@ -69,7 +69,7 @@
 												<a href="{{ route('users.edit', ['user' => $user->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
 												@if(Auth::user()->id!=$user->id)
-												@if($user->state==1)
+												@if($user->state=='Activo')
 												@can('users.deactive')
 												<button type="button" class="btn btn-warning btn-sm bs-tooltip" title="Desactivar" onclick="deactiveUser('{{ $user->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan

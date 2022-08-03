@@ -30,6 +30,7 @@ class EmployeeUpdateRequest extends FormRequest
             'name' => 'required|string|min:2|max:191',
             'lastname' => 'required|string|min:2|max:191',
             'birthday' => 'required|date_format:d-m-Y',
+            'license' => 'required|min:11|regex:/^[A-Z]{2}-[0-9]{4}-[0-9]{3,}$/',
             'state' => 'required|'.Rule::in(['0', '1'])
         ];
     }

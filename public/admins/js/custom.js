@@ -227,7 +227,7 @@ $(document).ready(function() {
     });
   }
 
-  //dropify para input file más personalizado
+  // dropify para input file más personalizado
   if ($('.dropify').length) {
     $('.dropify').dropify({
       messages: {
@@ -247,7 +247,7 @@ $(document).ready(function() {
     });
   }
 
-  //datepicker material
+  // datepicker material
   if ($('.dateMaterial').length) {
     $('.dateMaterial').bootstrapMaterialDatePicker({
       lang : 'es',
@@ -268,6 +268,9 @@ $(document).ready(function() {
       maxDate : "today"
     });
   }
+
+  // Inputmask
+  $('#maskLicense').inputmask("AA-9999-999");
 });
 
 // funcion para cambiar el input hidden al cambiar el switch de estado

@@ -41,6 +41,19 @@ $(document).ready(function(){
 					maxlength: 191
 				},
 
+				birthday: {
+					required: true,
+					date: false,
+					time: false,
+					step: false
+				},
+
+				license: {
+					required: true,
+					minlength: 11,
+					pattern: '^[A-Z]{2}-[0-9]{4}-[0-9]{3,}$'
+				},
+
 				email: {
 					required: true,
 					email: true,
@@ -56,14 +69,18 @@ $(document).ready(function(){
 					required: true,
 					minlength: 8,
 					maxlength: 40
-				},
-
-				terms: {
-					required: true
 				}
 			},
 			messages:
 			{
+				birthday: {
+					required: "Seleccione una fecha."
+				},
+
+				license: {
+					pattern: "Escribe un formato valido."
+				},
+				
 				email: {
 					remote: "Este correo ya esta en uso."
 				}
@@ -261,7 +278,14 @@ $(document).ready(function(){
 				birthday: {
 					required: true,
 					date: false,
-					time: false
+					time: false,
+					step: false
+				},
+
+				license: {
+					required: true,
+					minlength: 11,
+					pattern: '^[A-Z]{2}-[0-9]{4}-[0-9]{3,}$'
 				},
 
 				state: {
@@ -288,6 +312,10 @@ $(document).ready(function(){
 
 				birthday: {
 					required: "Seleccione una fecha."
+				},
+
+				license: {
+					pattern: "Escribe un formato valido."
 				},
 
 				state: {

@@ -62,6 +62,11 @@
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Licencia Ocupacional<b class="text-danger">*</b></label>
+									<input class="form-control @error('license') is-invalid @enderror" type="text" name="license" required placeholder="Introduzca una licencia ocupacional" value="{{ $employee->license }}" id="maskLicense">
+								</div>
+
+								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Correo Electrónico</label>
 									<input class="form-control" type="text" disabled value="{{ $employee->email }}">
 								</div>
@@ -97,6 +102,7 @@
 <script src="{{ asset('/admins/vendor/dropify/dropify.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/flatpickr/flatpickr.js') }}"></script>
 <script src="{{ asset('/admins/vendor/flatpickr/es.js') }}"></script>
+<script src="{{ asset('/admins/vendor/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/jquery.validate.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/messages_es.js') }}"></script>

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -52,10 +54,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'lastname' => ['required', 'string', 'min:2', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string', 'min:2', 'max:191'],
+            'lastname' => ['required', 'string', 'min:2', 'max:191'],
+            'birthday' => ['required', 'date_format:d-m-Y'],
+            'license' => ['required', 'min:11', 'regex:/^[A-Z]{2}-[0-9]{4}-[0-9]{3,}$/'],
+            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
         ]);
     }
 
@@ -70,10 +74,28 @@ class RegisterController extends Controller
         $user=User::create([
             'name' => $data['name'],
             'lastname' => $data['lastname'],
+            'birthday' => $data['birthday'],
+            'license' => $data['license'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'state' => '0'
         ]);
 
+        $user->assignRole('Trabajador');
+
         return $user;
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        Auth::logout();
+        return redirect()->route('login')->with(['alert' => 'lobibox', 'type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'Debes esperar a que un admin acepte tu solicitud para poder acceder.']);
     }
 }

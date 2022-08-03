@@ -124,10 +124,16 @@ body {
         color: #1b55e2; }
     .form-form .form-form-wrap form .field-wrapper svg.feather-user {
       top: 53px; }
+    .form-form .form-form-wrap form .field-wrapper svg.feather-calendar {
+      top: 51px;
+    }
+    .form-form .form-form-wrap form .field-wrapper svg.feather-credit-card {
+      top: 52px;
+    }
     .form-form .form-form-wrap form .field-wrapper svg.feather-lock {
       top: 50px; }
     .form-form .form-form-wrap form .field-wrapper svg.feather-at-sign {
-      top: 47px; }
+      top: 52px; }
       .form-form .form-form-wrap form .field-wrapper svg.feather-at-sign.register {
         top: 53px; }
     .form-form .form-form-wrap form .field-wrapper svg:not(.feather-eye) {

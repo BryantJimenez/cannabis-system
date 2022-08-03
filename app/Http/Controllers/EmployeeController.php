@@ -39,7 +39,7 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(EmployeeStoreRequest $request) {
-        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'birthday' => request('birthday'), 'email' => request('email'), 'password' => Hash::make(request('password')));
+        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'birthday' => request('birthday'), 'license' => request('license'), 'email' => request('email'), 'password' => Hash::make(request('password')));
         $employee=User::create($data);
 
         if ($employee) {
@@ -91,7 +91,7 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(EmployeeUpdateRequest $request, User $employee) {
-        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'birthday' => request('birthday'), 'state' => request('state'));
+        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'birthday' => request('birthday'), 'license' => request('license'), 'state' => request('state'));
         $employee->fill($data)->save();        
 
         if ($employee) {

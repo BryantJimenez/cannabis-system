@@ -14,11 +14,16 @@
     <link href="{{ asset('/admins/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/admins/css/authentication/form-2.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    @yield('links')
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
     <link href="{{ asset('/admins/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/admins/css/forms/switches.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('/admins/vendor/lobibox/Lobibox.min.css') }}">
 </head>
-<body class="form">
+<body class="form bg-primary">
 
     @yield('content')
 
@@ -28,8 +33,13 @@
     <script src="{{ asset('/admins/js/bootstrap/bootstrap.min.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    @yield('scripts')
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+
     <script src="{{ asset('/admins/js/authentication/form-2.js') }}"></script>
     <script src="{{ asset('/admins/vendor/validate/jquery.validate.js') }}"></script>
+    <script src="{{ asset('/admins/vendor/validate/additional-methods.js') }}"></script>
     <script src="{{ asset('/admins/vendor/validate/messages_es.js') }}"></script>
     <script src="{{ asset('/admins/js/validate.js') }}"></script>
     <script src="{{ asset('/admins/vendor/lobibox/Lobibox.js') }}"></script>

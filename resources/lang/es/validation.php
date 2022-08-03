@@ -151,7 +151,8 @@ return [
         'confirm'               => 'confirmar contraseña',
         'password_confirmation' => 'confirmar contraseña',
         'state'                 => 'estado',
-        'birthday'              => 'fecha de nacimiento'
+        'birthday'              => 'fecha de nacimiento',
+        'license'               => 'licencia ocupacional'
     ],
 ];
 ?>

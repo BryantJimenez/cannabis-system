@@ -43,6 +43,7 @@
 										<th>Nombre Completo</th>
 										<th>Correo</th>
 										<th>Fecha de Nacimiento</th>
+										<th>Licencia</th>
 										<th>Estado</th>
 										@if(auth()->user()->can('employees.show') || auth()->user()->can('employees.edit') || auth()->user()->can('employees.active') || auth()->user()->can('employees.deactive') || auth()->user()->can('employees.delete'))
 										<th>Acciones</th>
@@ -53,11 +54,12 @@
 									@foreach($employees as $employee)
 									<tr>
 										<td>{{ $loop->iteration }}</td>
-										<td class="d-flex">
+										<td class="d-flex align-items-center">
 											<img src="{{ image_exist('/admins/img/users/', $employee->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $employee->name." ".$employee->lastname }}" title="{{ $employee->name." ".$employee->lastname }}"> {{ $employee->name." ".$employee->lastname }}
 										</td>
 										<td>{{ $employee->email }}</td>
 										<td>{{ $employee->birthday->format('d-m-Y') }}</td>
+										<td>{{ $employee->license }}</td>
 										<td>{!! state($employee->state) !!}</td>
 										@if(auth()->user()->can('employees.show') || auth()->user()->can('employees.edit') || auth()->user()->can('employees.active') || auth()->user()->can('employees.deactive') || auth()->user()->can('employees.delete'))
 										<td>
@@ -68,7 +70,7 @@
 												@can('employees.edit')
 												<a href="{{ route('employees.edit', ['employee' => $employee->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
-												@if($employee->state==1)
+												@if($employee->state=='Activo')
 												@can('employees.deactive')
 												<button type="button" class="btn btn-warning btn-sm bs-tooltip" title="Desactivar" onclick="deactiveEmployee('{{ $employee->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan

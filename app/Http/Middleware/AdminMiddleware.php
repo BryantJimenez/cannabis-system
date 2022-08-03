@@ -16,8 +16,12 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->hasPermissionTo('dashboard')) {
+        if (auth()->check() && auth()->user()->hasPermissionTo('dashboard') && auth()->user()->state=='Activo') {
             return $next($request);
+        }
+
+        if (auth()->user()->state!='Activo') {
+            auth()->logout();
         }
         
         return redirect()->route('login');

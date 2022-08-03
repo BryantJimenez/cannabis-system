@@ -2,13 +2,18 @@
 
 @section('title', 'Registro de Usuario')
 
+@section('links')
+<link href="{{ asset('/admins/vendor/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/admins/vendor/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css">
+@endsection
+
 @section('content')
 
 <div class="form-container outer bg-primary">
     <div class="form-form">
         <div class="form-form-wrap">
             <div class="form-container">
-                <div class="form-content">
+                <div class="form-content my-5">
 
                     <h1 class="">Registro de Usuario</h1>
 
@@ -30,9 +35,21 @@
                                 <input id="lastname" name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" required placeholder="García" value="{{ old('lastname') }}" minlength="2" maxlength="191">
                             </div>
 
+                            <div class="field-wrapper input">
+                                <label for="birthday">FECHA DE NACIMIENTO</label>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <input id="birthday" name="birthday" type="text" class="form-control date @error('birthday') is-invalid @enderror" required placeholder="01-01-1979" value="{{ old('birthday') }}">
+                            </div>
+
+                            <div class="field-wrapper input">
+                                <label for="license">LICENCIA OCUPACIONAL</label>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                <input id="license" name="license" type="text" class="form-control @error('license') is-invalid @enderror" required placeholder="CM-0000-000" value="{{ old('license') }}">
+                            </div>
+
                             <div id="username-field" class="field-wrapper input">
                                 <label for="email">CORREO</label>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-at-sign"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path></svg>
                                 <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" required placeholder="{{ 'correo@gmail.com' }}" value="{{ old('email') }}" minlength="5" maxlength="191">
                             </div>
 
@@ -42,10 +59,7 @@
                                 <input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror" required placeholder="********" minlength="8" maxlength="40">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </div>
-                            <div class="form-group mb-2">
-                                <input type="checkbox" name="terms" required id="terms-conditions">
-                                <label class="text-body small mb-0" for="terms-conditions">Acepto <a href="javascript:void(0);" class="text-primary" data-dismiss="modal" data-toggle="modal" data-target="#modal-terms">Términos y condiciones</a></label>
-                            </div>
+
                             <div class="d-sm-flex justify-content-between">
                                 <div class="field-wrapper">
                                     <button type="submit" class="btn btn-primary font-weight-bold" action="register">Registrate</button>
@@ -66,27 +80,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-terms" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Términos y Condiciones</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="height: 70vh; overflow-y: scroll;">
-                <div class="row">
-                    <div class="col-12">
-                        {{-- {!! $setting->terms !!} --}}
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger rounded" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+@endsection
 
+@section('scripts')
+<script src="{{ asset('/admins/vendor/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ asset('/admins/vendor/flatpickr/es.js') }}"></script>
+<script src="{{ asset('/admins/vendor/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('/auth/js/script.js') }}"></script>
 @endsection
