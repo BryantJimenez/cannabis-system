@@ -29,6 +29,16 @@
                 </a>
             </li>
             @endcan
+
+            @can('employees.index')
+            <li class="menu {{ active('admin/trabajadores', 0) }}">
+                <a href="{{ route('employees.index') }}" aria-expanded="{{ menu_expanded('admin/trabajadores', 0) }}" class="dropdown-toggle">
+                    <div class="">
+                        <span><i class="fa fa-users"></i> Trabajadores</span>
+                    </div>
+                </a>
+            </li>
+            @endcan
         </ul>
 
     </nav>

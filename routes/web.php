@@ -13,19 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/////////////////////////////////////// AUTH ////////////////////////////////////////////////////
-
+/////////////////////////////////////// AUTH /////////////////////////////////////////////////
 Auth::routes();
 Route::get('/usuarios/email', 'AdminController@emailVerifyAdmin');
 
-/////////////////////////////////////////////// WEB ////////////////////////////////////////////////
+///////////////////////////////////////// WEB ////////////////////////////////////////////////
 Route::get('/', function() {
 	return redirect()->route('admin');
 });
 
+/////////////////////////////////////// ADMIN ////////////////////////////////////////////////
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
-	/////////////////////////////////////// ADMIN ///////////////////////////////////////////////////
-
 	// Home
 	Route::get('/', 'AdminController@index')->name('admin');
 
@@ -47,5 +45,18 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::delete('/{user:slug}', 'UserController@destroy')->name('users.delete')->middleware('permission:users.delete');
 		Route::put('/{user:slug}/activar', 'UserController@activate')->name('users.activate')->middleware('permission:users.active');
 		Route::put('/{user:slug}/desactivar', 'UserController@deactivate')->name('users.deactivate')->middleware('permission:users.deactive');
+	});
+
+	// Employees
+	Route::prefix('trabajadores')->group(function () {
+		Route::get('/', 'EmployeeController@index')->name('employees.index')->middleware('permission:employees.index');
+		Route::get('/registrar', 'EmployeeController@create')->name('employees.create')->middleware('permission:employees.create');
+		Route::post('/', 'EmployeeController@store')->name('employees.store')->middleware('permission:employees.create');
+		Route::get('/{employee:slug}', 'EmployeeController@show')->name('employees.show')->middleware('permission:employees.show');
+		Route::get('/{employee:slug}/editar', 'EmployeeController@edit')->name('employees.edit')->middleware('permission:employees.edit');
+		Route::put('/{employee:slug}', 'EmployeeController@update')->name('employees.update')->middleware('permission:employees.edit');
+		Route::delete('/{employee:slug}', 'EmployeeController@destroy')->name('employees.delete')->middleware('permission:employees.delete');
+		Route::put('/{employee:slug}/activar', 'EmployeeController@activate')->name('employees.activate')->middleware('permission:employees.active');
+		Route::put('/{employee:slug}/desactivar', 'EmployeeController@deactivate')->name('employees.deactivate')->middleware('permission:employees.deactive');
 	});
 });

@@ -29,5 +29,17 @@ class PermissionsSeeder extends Seeder
             Permission::create(['name' => 'users.active']);
             Permission::create(['name' => 'users.deactive']);
         }
+
+        // Employee Permissions
+        $permission=Permission::where('name', 'employees.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'employees.index']);
+            Permission::create(['name' => 'employees.create']);
+            Permission::create(['name' => 'employees.show']);
+            Permission::create(['name' => 'employees.edit']);
+            Permission::create(['name' => 'employees.delete']);
+            Permission::create(['name' => 'employees.active']);
+            Permission::create(['name' => 'employees.deactive']);
+        }
     }
 }
