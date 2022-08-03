@@ -59,4 +59,17 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::put('/{employee:slug}/activar', 'EmployeeController@activate')->name('employees.activate')->middleware('permission:employees.active');
 		Route::put('/{employee:slug}/desactivar', 'EmployeeController@deactivate')->name('employees.deactivate')->middleware('permission:employees.deactive');
 	});
+
+	// Strains
+	Route::prefix('cepas')->group(function () {
+		Route::get('/', 'StrainController@index')->name('strains.index')->middleware('permission:strains.index');
+		Route::get('/registrar', 'StrainController@create')->name('strains.create')->middleware('permission:strains.create');
+		Route::post('/', 'StrainController@store')->name('strains.store')->middleware('permission:strains.create');
+		Route::get('/{strain:slug}', 'StrainController@show')->name('strains.show')->middleware('permission:strains.show');
+		Route::get('/{strain:slug}/editar', 'StrainController@edit')->name('strains.edit')->middleware('permission:strains.edit');
+		Route::put('/{strain:slug}', 'StrainController@update')->name('strains.update')->middleware('permission:strains.edit');
+		Route::delete('/{strain:slug}', 'StrainController@destroy')->name('strains.delete')->middleware('permission:strains.delete');
+		Route::put('/{strain:slug}/activar', 'StrainController@activate')->name('strains.activate')->middleware('permission:strains.active');
+		Route::put('/{strain:slug}/desactivar', 'StrainController@deactivate')->name('strains.deactivate')->middleware('permission:strains.deactive');
+	});
 });

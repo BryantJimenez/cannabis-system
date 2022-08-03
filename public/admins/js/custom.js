@@ -300,6 +300,16 @@ function activeEmployee(slug) {
   $('#formActiveEmployee').attr('action', '/admin/trabajadores/' + slug + '/activar');
 }
 
+function deactiveStrain(slug) {
+  $("#deactiveStrain").modal();
+  $('#formDeactiveStrain').attr('action', '/admin/cepas/' + slug + '/desactivar');
+}
+
+function activeStrain(slug) {
+  $("#activeStrain").modal();
+  $('#formActiveStrain').attr('action', '/admin/cepas/' + slug + '/activar');
+}
+
 //funciones para preguntar al eliminar
 function deleteUser(slug) {
   $("#deleteUser").modal();
@@ -309,4 +319,9 @@ function deleteUser(slug) {
 function deleteEmployee(slug) {
   $("#deleteEmployee").modal();
   $('#formDeleteEmployee').attr('action', '/admin/trabajadores/' + slug);
+}
+
+function deleteStrain(slug) {
+  $("#deleteStrain").modal();
+  $('#formDeleteStrain').attr('action', '/admin/cepas/' + slug);
 }

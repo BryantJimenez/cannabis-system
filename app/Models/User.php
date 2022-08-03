@@ -53,6 +53,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the state.
+     *
+     * @return string
+     */
+    public function getStateAttribute($value)
+    {
+        if ($value=='1') {
+            return 'Activo';
+        } elseif ($value=='0') {
+            return 'Inactivo';
+        }
+        return 'Desconocido';
+    }
+
+    /**
      * Retrieve the model for a bound value.
      *
      * @param  mixed  $value

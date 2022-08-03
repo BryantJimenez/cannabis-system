@@ -300,4 +300,22 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	// Strains
+	$("button[action='strain']").on("click",function(){
+		$("#formStrain").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 2,
+					maxlength: 191
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='strain']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
 });
