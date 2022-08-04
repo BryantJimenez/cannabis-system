@@ -1,11 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Editar Cuarto')
+@section('title', 'Crear Recipiente')
 
 @section('links')
-<link href="{{ asset('/admins/vendor/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/admins/vendor/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/admins/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="{{ asset('/admins/vendor/lobibox/Lobibox.min.css') }}">
 @endsection
 
@@ -18,7 +15,7 @@
 			<div class="widget-header">
 				<div class="row">
 					<div class="col-xl-12 col-md-12 col-sm-12 col-12">
-						<h4>Editar Cuarto</h4>
+						<h4>Crear Recipiente</h4>
 					</div>                 
 				</div>
 			</div>
@@ -30,19 +27,18 @@
 						@include('admin.partials.errors')
 
 						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
-						<form action="{{ route('rooms.update', ['room' => $room->slug]) }}" method="POST" class="form" id="formRoom">
+						<form action="{{ route('containers.store') }}" method="POST" class="form" id="formContainer">
 							@csrf
-							@method('PUT')
 							<div class="row">
-								<div class="form-group col-12">
+                                <div class="form-group col-12">
 									<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
-									<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ $room->name }}">
+									<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name') }}">
 								</div>
-								
+
 								<div class="form-group col-12">
 									<div class="btn-group" role="group">
-										<button type="submit" class="btn btn-primary" action="room">Actualizar</button>
-										<a href="{{ route('rooms.index') }}" class="btn btn-secondary">Volver</a>
+										<button type="submit" class="btn btn-primary" action="container">Guardar</button>
+										<a href="{{ route('containers.index') }}" class="btn btn-secondary">Volver</a>
 									</div>
 								</div> 
 							</div>
@@ -63,7 +59,5 @@
 <script src="{{ asset('/admins/vendor/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/messages_es.js') }}"></script>
 <script src="{{ asset('/admins/js/validate.js') }}"></script>
-<script src="{{ asset('/admins/vendor/sweetalerts/sweetalert2.min.js') }}"></script>
-<script src="{{ asset('/admins/vendor/sweetalerts/custom-sweetalert.js') }}"></script>
 <script src="{{ asset('/admins/vendor/lobibox/Lobibox.js') }}"></script>
 @endsection

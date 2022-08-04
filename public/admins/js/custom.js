@@ -323,6 +323,16 @@ function activeRoom(slug) {
   $('#formActiveRoom').attr('action', '/admin/cuartos/' + slug + '/activar');
 }
 
+function deactiveContainer(slug) {
+  $("#deactiveContainer").modal();
+  $('#formDeactiveContainer').attr('action', '/admin/recipientes/' + slug + '/desactivar');
+}
+
+function activeContainer(slug) {
+  $("#activeContainer").modal();
+  $('#formActiveContainer').attr('action', '/admin/recipientes/' + slug + '/activar');
+}
+
 //funciones para preguntar al eliminar
 function deleteUser(slug) {
   $("#deleteUser").modal();
@@ -342,4 +352,9 @@ function deleteStrain(slug) {
 function deleteRoom(slug) {
   $("#deleteRoom").modal();
   $('#formDeleteRoom').attr('action', '/admin/cuartos/' + slug);
+}
+
+function deleteContainer(slug) {
+  $("#deleteContainer").modal();
+  $('#formDeleteContainer').attr('action', '/admin/recipientes/' + slug);
 }

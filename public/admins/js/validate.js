@@ -364,4 +364,22 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	// Containers
+	$("button[action='container']").on("click",function(){
+		$("#formContainer").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 1,
+					maxlength: 191
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='container']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
 });

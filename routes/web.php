@@ -85,4 +85,17 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::put('/{room:slug}/activar', 'RoomController@activate')->name('rooms.activate')->middleware('permission:rooms.active');
 		Route::put('/{room:slug}/desactivar', 'RoomController@deactivate')->name('rooms.deactivate')->middleware('permission:rooms.deactive');
 	});
+
+	// Containers
+	Route::prefix('recipientes')->group(function () {
+		Route::get('/', 'ContainerController@index')->name('containers.index')->middleware('permission:containers.index');
+		Route::get('/registrar', 'ContainerController@create')->name('containers.create')->middleware('permission:containers.create');
+		Route::post('/', 'ContainerController@store')->name('containers.store')->middleware('permission:containers.create');
+		Route::get('/{container:slug}', 'ContainerController@show')->name('containers.show')->middleware('permission:containers.show');
+		Route::get('/{container:slug}/editar', 'ContainerController@edit')->name('containers.edit')->middleware('permission:containers.edit');
+		Route::put('/{container:slug}', 'ContainerController@update')->name('containers.update')->middleware('permission:containers.edit');
+		Route::delete('/{container:slug}', 'ContainerController@destroy')->name('containers.delete')->middleware('permission:containers.delete');
+		Route::put('/{container:slug}/activar', 'ContainerController@activate')->name('containers.activate')->middleware('permission:containers.active');
+		Route::put('/{container:slug}/desactivar', 'ContainerController@deactivate')->name('containers.deactivate')->middleware('permission:containers.deactive');
+	});
 });
