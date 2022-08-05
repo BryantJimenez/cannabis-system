@@ -270,7 +270,8 @@ $(document).ready(function() {
   }
 
   // Inputmask
-  $('#maskLicense').inputmask("AA-9999-999");
+  $('#maskLicense').inputmask("CM-9999-999");
+  $('#maskHarvest').inputmask("H9.9");
 });
 
 // funcion para cambiar el input hidden al cambiar el switch de estado
@@ -333,6 +334,16 @@ function activeContainer(slug) {
   $('#formActiveContainer').attr('action', '/admin/recipientes/' + slug + '/activar');
 }
 
+function deactiveHarvest(slug) {
+  $("#deactiveHarvest").modal();
+  $('#formDeactiveHarvest').attr('action', '/admin/cosechas/' + slug + '/desactivar');
+}
+
+function activeHarvest(slug) {
+  $("#activeHarvest").modal();
+  $('#formActiveHarvest').attr('action', '/admin/cosechas/' + slug + '/activar');
+}
+
 //funciones para preguntar al eliminar
 function deleteUser(slug) {
   $("#deleteUser").modal();
@@ -357,4 +368,9 @@ function deleteRoom(slug) {
 function deleteContainer(slug) {
   $("#deleteContainer").modal();
   $('#formDeleteContainer').attr('action', '/admin/recipientes/' + slug);
+}
+
+function deleteHarvest(slug) {
+  $("#deleteHarvest").modal();
+  $('#formDeleteHarvest').attr('action', '/admin/cosechas/' + slug);
 }

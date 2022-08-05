@@ -98,4 +98,17 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::put('/{container:slug}/activar', 'ContainerController@activate')->name('containers.activate')->middleware('permission:containers.active');
 		Route::put('/{container:slug}/desactivar', 'ContainerController@deactivate')->name('containers.deactivate')->middleware('permission:containers.deactive');
 	});
+
+	// Harvests
+	Route::prefix('cosechas')->group(function () {
+		Route::get('/', 'HarvestController@index')->name('harvests.index')->middleware('permission:harvests.index');
+		Route::get('/registrar', 'HarvestController@create')->name('harvests.create')->middleware('permission:harvests.create');
+		Route::post('/', 'HarvestController@store')->name('harvests.store')->middleware('permission:harvests.create');
+		Route::get('/{harvest:slug}', 'HarvestController@show')->name('harvests.show')->middleware('permission:harvests.show');
+		Route::get('/{harvest:slug}/editar', 'HarvestController@edit')->name('harvests.edit')->middleware('permission:harvests.edit');
+		Route::put('/{harvest:slug}', 'HarvestController@update')->name('harvests.update')->middleware('permission:harvests.edit');
+		Route::delete('/{harvest:slug}', 'HarvestController@destroy')->name('harvests.delete')->middleware('permission:harvests.delete');
+		Route::put('/{harvest:slug}/activar', 'HarvestController@activate')->name('harvests.activate')->middleware('permission:harvests.active');
+		Route::put('/{harvest:slug}/desactivar', 'HarvestController@deactivate')->name('harvests.deactivate')->middleware('permission:harvests.deactive');
+	});
 });

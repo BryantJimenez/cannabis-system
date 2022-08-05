@@ -77,5 +77,17 @@ class PermissionsSeeder extends Seeder
             Permission::create(['name' => 'containers.active']);
             Permission::create(['name' => 'containers.deactive']);
         }
+
+        // Harvest Permissions
+        $permission=Permission::where('name', 'harvests.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'harvests.index']);
+            Permission::create(['name' => 'harvests.create']);
+            Permission::create(['name' => 'harvests.show']);
+            Permission::create(['name' => 'harvests.edit']);
+            Permission::create(['name' => 'harvests.delete']);
+            Permission::create(['name' => 'harvests.active']);
+            Permission::create(['name' => 'harvests.deactive']);
+        }
     }
 }

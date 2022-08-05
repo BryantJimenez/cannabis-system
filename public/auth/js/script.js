@@ -16,5 +16,5 @@ $(document).ready(function() {
   }
 
   // Inputmask
-  $('#license').inputmask("AA-9999-999");
+  $('#license').inputmask("CM-9999-999");
 });

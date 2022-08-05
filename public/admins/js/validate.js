@@ -382,4 +382,28 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	// Harvests
+	$("button[action='harvest']").on("click",function(){
+		$("#formHarvest").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 4,
+					pattern: '^[A-Z][0-9].[0-9]{1,}$'
+				}
+			},
+			messages:
+			{
+				name: {
+					pattern: "Escribe un formato valido."
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='harvest']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
 });
