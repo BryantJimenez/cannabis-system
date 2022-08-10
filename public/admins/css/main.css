@@ -2561,6 +2561,12 @@ label.error {
   border-top: none;*/
 }
 
+.bg-light-gray {
+  color: #3b3f5c;
+  background-color: #f1f2f3;
+  border-color: #bfc9d4;
+}
+
 .card-left-radius {
   border-radius: 100px 30px 30px 100px;
 }

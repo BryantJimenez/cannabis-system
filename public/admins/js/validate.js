@@ -406,4 +406,240 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	// Stage Cured
+	$("button[action='stage']").on("click",function(){
+		if ($("#formStageCured").length) {
+			$("#formStageCured").validate().destroy();
+		}
+		var container=$('#selectContainers option:selected').val();
+		$(".duplicate-error").addClass('d-none');
+		$("#formStageCured").validate({
+			rules:
+			{
+				strain_id: {
+					required: true
+				},
+
+				room_id: {
+					required: true
+				},
+
+				harvest_id: {
+					required: true
+				},
+
+				container_id: {
+					required: true
+				},
+
+				'plants[0]': {
+					required: true,
+					minlength: 2,
+					maxlength: 191,
+					remote: {
+						url: "/plantas/codigo/"+container,
+						type: "get"
+					}
+				},
+
+				'plants[]': {
+					required: false,
+					minlength: 2,
+					maxlength: 191,
+					remote: {
+						url: "/plantas/codigo/"+container,
+						type: "get"
+					}
+				},
+
+				flower: {
+					required: true,
+					min: 0
+				},
+
+				flower_confirmation: {
+					equalTo: "#flower",
+					required: true,
+					min: 0
+				},
+
+				waste: {
+					required: true,
+					min: 0
+				},
+
+				waste_confirmation: {
+					equalTo: "#waste",
+					required: true,
+					min: 0
+				},
+
+				notes: {
+					required: false,
+					minlength: 1,
+					maxlength: 1000
+				}
+			},
+			messages:
+			{
+				strain_id: {
+					required: "Seleccione una opción."
+				},
+
+				room_id: {
+					required: "Seleccione una opción."
+				},
+
+				harvest_id: {
+					required: "Seleccione una opción."
+				},
+
+				container_id: {
+					required: "Seleccione una opción."
+				},
+
+				'plants[0]': {
+					remote: "Esta planta esta duplicada."
+				},
+
+				'plants[]': {
+					remote: "Esta planta esta duplicada."
+				}
+			},
+			submitHandler: function(form) {
+				var duplicate=false;
+				$('input[name^="plants"]').each(function(index, el) {
+					var current=$(this);
+					console.log(current.val());
+					$('input[name^="plants"]').each(function() {
+						if ($(this).val()!='' && $(this).val()==current.val() && $(this).attr('id')!=current.attr('id')) {
+							console.log($(this).val());
+							$(".duplicate-error").removeClass('d-none');
+							duplicate=true;
+						}
+					});
+				});
+				if (duplicate) {
+					return false;
+				}
+				$("button[action='stage']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
+
+	// Stage Trimmed
+	$("button[action='stage']").on("click",function(){
+		$("#formStageTrimmed").validate({
+			rules:
+			{
+				strain_id: {
+					required: true
+				},
+
+				room_id: {
+					required: true
+				},
+
+				harvest_id: {
+					required: true
+				},
+
+				container_id: {
+					required: true
+				},
+
+				flower: {
+					required: true,
+					min: 0
+				},
+
+				flower_confirmation: {
+					equalTo: "#flower",
+					required: true,
+					min: 0
+				},
+
+				larf: {
+					required: true,
+					min: 0
+				},
+
+				larf_confirmation: {
+					equalTo: "#larf",
+					required: true,
+					min: 0
+				},
+
+				trim: {
+					required: true,
+					min: 0
+				},
+
+				trim_confirmation: {
+					equalTo: "#trim",
+					required: true,
+					min: 0
+				},
+
+				waste: {
+					required: true,
+					min: 0
+				},
+
+				waste_confirmation: {
+					equalTo: "#waste",
+					required: true,
+					min: 0
+				},
+
+				notes: {
+					required: false,
+					minlength: 1,
+					maxlength: 1000
+				}
+			},
+			messages:
+			{
+				strain_id: {
+					required: "Seleccione una opción."
+				},
+
+				room_id: {
+					required: "Seleccione una opción."
+				},
+
+				harvest_id: {
+					required: "Seleccione una opción."
+				},
+
+				container_id: {
+					required: "Seleccione una opción."
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='stage']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
+
+	// Settings
+	$("button[action='setting']").on("click",function(){
+		$("#formSetting").validate({
+			rules:
+			{
+				qty_plants: {
+					required: true,
+					min: 1,
+					max: 6
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='setting']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
 });

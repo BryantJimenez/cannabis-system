@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\Container;
 use App\Http\Requests\Container\ContainerStoreRequest;
 use App\Http\Requests\Container\ContainerUpdateRequest;
@@ -15,8 +16,9 @@ class ContainerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $setting=Setting::where('id', '1')->firstOrFail();
         $containers=Container::orderBy('id', 'DESC')->get();
-        return view('admin.containers.index', compact('containers'));
+        return view('admin.containers.index', compact('setting', 'containers'));
     }
 
     /**

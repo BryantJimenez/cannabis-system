@@ -11,7 +11,7 @@ class Container extends Model
 {
     use SoftDeletes, HasSlug;
 
-    protected $fillable = ['name', 'slug', 'state'];
+    protected $fillable = ['name', 'slug', 'use', 'state'];
 
     /**
      * Get the state.
@@ -48,5 +48,9 @@ class Container extends Model
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->slugsShouldBeNoLongerThan(191)->doNotGenerateSlugsOnUpdate();
+    }
+
+    public function stages() {
+        return $this->hasMany(Stage::class);
     }
 }

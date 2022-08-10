@@ -89,5 +89,42 @@ class PermissionsSeeder extends Seeder
             Permission::create(['name' => 'harvests.active']);
             Permission::create(['name' => 'harvests.deactive']);
         }
+
+        // Stage Cured Permissions
+        $permission=Permission::where('name', 'stages.cured.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'stages.cured.index']);
+            Permission::create(['name' => 'stages.cured.create']);
+            Permission::create(['name' => 'stages.cured.show']);
+        }
+
+        // Stage Trimmed Permissions
+        $permission=Permission::where('name', 'stages.trimmed.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'stages.trimmed.index']);
+            Permission::create(['name' => 'stages.trimmed.create']);
+            Permission::create(['name' => 'stages.trimmed.show']);
+            Permission::create(['name' => 'stages.trimmed.empty']);
+        }
+
+        // Record Cured Permissions
+        $permission=Permission::where('name', 'records.cured.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'records.cured.index']);
+            Permission::create(['name' => 'records.cured.show']);
+        }
+
+        // Record Trimmed Permissions
+        $permission=Permission::where('name', 'records.trimmed.index')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'records.trimmed.index']);
+            Permission::create(['name' => 'records.trimmed.show']);
+        }
+
+        // Setting Permissions
+        $permission=Permission::where('name', 'settings.edit')->first();
+        if (is_null($permission)) {
+            Permission::create(['name' => 'settings.edit']);
+        }
     }
 }

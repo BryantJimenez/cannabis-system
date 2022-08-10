@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\Employee\EmployeeStoreRequest;
 use App\Http\Requests\Employee\EmployeeUpdateRequest;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(EmployeeStoreRequest $request) {
-        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'birthday' => request('birthday'), 'license' => request('license'), 'email' => request('email'), 'password' => Hash::make(request('password')));
+        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'phone' => request('phone'), 'birthday' => request('birthday'), 'license' => request('license'), 'email' => request('email'), 'password' => Hash::make(request('password')));
         $employee=User::create($data);
 
         if ($employee) {
@@ -80,7 +81,8 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(User $employee) {
-        return view('admin.employees.edit', compact('employee'));
+        $roles=Role::all()->pluck('name');
+        return view('admin.employees.edit', compact('employee', 'roles'));
     }
 
     /**
@@ -91,11 +93,11 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(EmployeeUpdateRequest $request, User $employee) {
-        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'birthday' => request('birthday'), 'license' => request('license'), 'state' => request('state'));
+        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'phone' => request('phone'), 'birthday' => request('birthday'), 'license' => request('license'), 'state' => request('state'));
         $employee->fill($data)->save();        
 
         if ($employee) {
-            $employee->syncRoles(['Trabajador']);
+            $employee->syncRoles([request('type')]);
 
             // Mover imagen a carpeta users y extraer nombre
             if ($request->hasFile('photo')) {

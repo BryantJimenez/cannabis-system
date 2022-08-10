@@ -27,6 +27,7 @@ class EmployeeStoreRequest extends FormRequest
       'photo' => 'nullable|file|mimetypes:image/*',
       'name' => 'required|string|min:2|max:191',
       'lastname' => 'required|string|min:2|max:191',
+      'phone' => 'required|string|min:5|max:15',
       'birthday' => 'required|date_format:d-m-Y',
       'license' => 'required|min:11|regex:/^[A-Z]{2}-[0-9]{4}-[0-9]{3,}$/',
       'email' => 'required|string|email|max:191|unique:users,email',

@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Room;
+use App\Models\Plant;
+use App\Models\Stage;
+use App\Models\Strain;
+use App\Models\Setting;
+use App\Models\Harvest;
+use App\Models\Container;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,8 +23,12 @@ class AdminController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index() {
-        $users=User::count();
-        return view('admin.home', compact('users'));
+        $users=User::role(['Super Admin', 'Administrador', 'Supervisor'])->count();
+        $employees=User::role(['Trabajador'])->count();
+        $rooms=Room::count();
+        $strains=Strain::count();
+        $containers=Container::count();
+        return view('admin.home', compact('users', 'employees', 'rooms', 'strains', 'containers'));
     }
 
     public function profile() {
@@ -31,6 +42,10 @@ class AdminController extends Controller
     public function profileUpdate(ProfileUpdateRequest $request) {
         $user=User::where('slug', Auth::user()->slug)->firstOrFail();
         $data=array('name' => request('name'), 'lastname' => request('lastname'), 'phone' => request('phone'));
+        if (Auth::user()->hasRole(['Trabajador'])) {
+        	$data['birthday']=request('birthday');
+        	$data['license']=request('license');
+        }
 
         if (!is_null(request('password'))) {
             $data['password']=Hash::make(request('password'));
@@ -50,6 +65,10 @@ class AdminController extends Controller
             Auth::user()->name=request('name');
             Auth::user()->lastname=request('lastname');
             Auth::user()->phone=request('phone');
+            if (Auth::user()->hasRole(['Trabajador'])) {
+            	Auth::user()->birthday=$user->birthday;
+            	Auth::user()->license=request('license');
+            }
             if (!is_null(request('password'))) {
                 Auth::user()->password=Hash::make(request('password'));
             }
@@ -67,5 +86,61 @@ class AdminController extends Controller
         } else {
             return "true";
         }
+    }
+
+    public function codeVerifyPlant(Request $request, $container=NULL)
+    {
+        $code=(is_array(request('plants')) && isset(request('plants')[0])) ? request('plants')[0] : request('plants');
+        $container=Container::where('slug', $container)->first();
+        if (!is_null($container)) {
+            $stage=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['container_id', $container->id]])->first();
+            if (!is_null($stage)) {
+                $count=Plant::where('code', $code)->count();
+                $exist=$stage['plants']->where('code', $code)->count();
+                if (($count>0 && $exist>0) || $count==0) {
+                    return "true";
+                } else {
+                    return "false";
+                }
+            }
+        }
+
+        $count=Plant::where('code', $code)->count();
+        if ($count>0) {
+            return "false";
+        } else {
+            return "true";
+        }
+    }
+
+    public function containerCured(Request $request)
+    {
+        $setting=Setting::where('id', '1')->first();
+        $container=Container::where('slug', request('container'))->first();
+
+        if (!is_null($setting) && !is_null($container)) {
+            $stage=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['container_id', $container->id]])->first();
+            if (!is_null($stage)) {
+            	return response()->json(['state' => true, 'setting' => ['qty_plants' => $setting->qty_plants], 'data' => ['plants' => $stage['plants'], 'flower' => $stage->flower, 'waste' => $stage->waste], 'count_plants' => $stage['plants']->count()], 200);
+            }
+        }
+
+        return response()->json(['state' => false], 500);
+    }
+
+    public function containersCured(Request $request)
+    {
+        $setting=Setting::where('id', '1')->first();
+        $room=Room::where('slug', request('room'))->first();
+        $strain=Strain::where('slug', request('strain'))->first();
+        $harvest=Harvest::where('slug', request('harvest'))->first();
+
+        if (!is_null($setting) && !is_null($room) && !is_null($strain) && !is_null($harvest)) {
+            $stages=Stage::where([['type', '1'], ['state', '0'], ['room_id', $room->id], ['strain_id', $strain->id], ['harvest_id', $harvest->id]])->get()->pluck('container_id');
+            $data=Container::where('use', '>', 0)->whereIn('id', $stages)->orderByRaw('LENGTH(name)', 'ASC')->orderBy('name', 'ASC')->get();
+            return response()->json(['state' => true, 'setting' => ['qty_plants' => $setting->qty_plants], 'data' => $data], 200);
+        }
+
+        return response()->json(['state' => false], 500);
     }
 }

@@ -14,8 +14,10 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionsSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(UsersTableSeeder::class);
+        $this->call(SettingsSeeder::class);
         $this->call(StrainsSeeder::class);
         $this->call(RoomsSeeder::class);
         $this->call(ContainersSeeder::class);
+        $this->call(HarvestsSeeder::class);
     }
 }

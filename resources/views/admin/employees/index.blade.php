@@ -41,7 +41,8 @@
 									<tr>
 										<th>#</th>
 										<th>Nombre Completo</th>
-										<th>Correo</th>
+										<th>Email</th>
+										<th>Teléfono</th>
 										<th>Fecha de Nacimiento</th>
 										<th>Licencia</th>
 										<th>Estado</th>
@@ -58,6 +59,7 @@
 											<img src="{{ image_exist('/admins/img/users/', $employee->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $employee->name." ".$employee->lastname }}" title="{{ $employee->name." ".$employee->lastname }}"> {{ $employee->name." ".$employee->lastname }}
 										</td>
 										<td>{{ $employee->email }}</td>
+										<td>{{ $employee->phone }}</td>
 										<td>{{ $employee->birthday->format('d-m-Y') }}</td>
 										<td>{{ $employee->license }}</td>
 										<td>{!! state($employee->state) !!}</td>

@@ -20,7 +20,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'lastname', 'slug', 'photo', 'birthday', 'license', 'email', 'password', 'state'];
+    protected $fillable = ['name', 'lastname', 'slug', 'photo', 'phone', 'birthday', 'license', 'email', 'password', 'state'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -87,5 +87,9 @@ class User extends Authenticatable
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom(['name', 'lastname'])->saveSlugsTo('slug')->slugsShouldBeNoLongerThan(191)->doNotGenerateSlugsOnUpdate();
+    }
+
+    public function stages() {
+        return $this->hasMany(Stage::class);
     }
 }

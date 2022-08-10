@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->string('photo')->default('usuario.png');
             $table->string('slug')->unique();
+            $table->string('phone')->nullable();
             $table->date('birthday')->nullable();
             $table->string('license')->nullable();
             $table->string('email')->unique();

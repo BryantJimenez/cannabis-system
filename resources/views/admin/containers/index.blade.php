@@ -41,6 +41,7 @@
 									<tr>
 										<th>#</th>
 										<th>Nombre</th>
+										<th>Uso</th>
 										<th>Estado</th>
 										@if(auth()->user()->can('containers.edit') || auth()->user()->can('containers.active') || auth()->user()->can('containers.deactive') || auth()->user()->can('containers.delete'))
 										<th>Acciones</th>
@@ -52,6 +53,7 @@
 									<tr>
 										<td>{{ $loop->iteration }}</td>
 										<td>{{ $container->name }}</td>
+										<td>{!! containerUse($container->use, $setting->qty_plants) !!}</td>
 										<td>{!! state($container->state) !!}</td>
 										@if(auth()->user()->can('containers.edit') || auth()->user()->can('containers.active') || auth()->user()->can('containers.deactive') || auth()->user()->can('containers.delete'))
 										<td>

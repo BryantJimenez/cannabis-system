@@ -21,7 +21,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $users=User::role(['Super Admin', 'Administrador'])->with(['roles'])->orderBy('id', 'DESC')->get();
+        $users=User::role(['Super Admin', 'Administrador', 'Supervisor'])->with(['roles'])->orderBy('id', 'DESC')->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -42,7 +42,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserStoreRequest $request) {
-        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'email' => request('email'), 'password' => Hash::make(request('password')));
+        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'phone' => request('phone'), 'email' => request('email'), 'password' => Hash::make(request('password')));
         $user=User::create($data);
 
         if ($user) {
@@ -98,7 +98,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UserUpdateRequest $request, User $user) {
-        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'state' => request('state'));
+        $data=array('name' => request('name'), 'lastname' => request('lastname'), 'phone' => request('phone'), 'state' => request('state'));
         $user->fill($data)->save();        
 
         if ($user) {

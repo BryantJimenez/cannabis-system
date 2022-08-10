@@ -4,6 +4,8 @@
 
 @section('links')
 <link rel="stylesheet" href="{{ asset('/admins/vendor/dropify/dropify.min.css') }}">
+<link href="{{ asset('/admins/vendor/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/admins/vendor/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('/admins/vendor/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/admins/vendor/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/admins/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
@@ -55,6 +57,23 @@
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Teléfono<b class="text-danger">*</b></label>
+									<input class="form-control number @error('phone') is-invalid @enderror" type="text" name="phone" required placeholder="Introduzca un teléfono" value="{{ Auth::user()->phone }}">
+								</div>
+
+								@if(Auth::user()->hasRole(['Trabajador']))
+								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Fecha de Nacimiento<b class="text-danger">*</b></label>
+									<input class="form-control date @error('birthday') is-invalid @enderror" type="text" name="birthday" required placeholder="Seleccione una fecha de nacimiento" value="{{ Auth::user()->birthday->format('d-m-Y') }}" id="flatpickr">
+								</div>
+
+								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Licencia Ocupacional<b class="text-danger">*</b></label>
+									<input class="form-control @error('license') is-invalid @enderror" type="text" name="license" required placeholder="Introduzca una licencia ocupacional" value="{{ Auth::user()->license }}" id="maskLicense">
+								</div>
+								@endif
+
+								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Correo Electrónico</label>
 									<input class="form-control" type="text" disabled value="{{ Auth::user()->email }}">
 								</div>
@@ -90,6 +109,9 @@
 
 @section('scripts')
 <script src="{{ asset('/admins/vendor/dropify/dropify.min.js') }}"></script>
+<script src="{{ asset('/admins/vendor/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ asset('/admins/vendor/flatpickr/es.js') }}"></script>
+<script src="{{ asset('/admins/vendor/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/jquery.validate.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendor/validate/messages_es.js') }}"></script>

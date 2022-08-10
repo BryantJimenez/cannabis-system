@@ -57,6 +57,11 @@
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Teléfono<b class="text-danger">*</b></label>
+									<input class="form-control number @error('phone') is-invalid @enderror" type="text" name="phone" required placeholder="Introduzca un teléfono" value="{{ $employee->phone }}">
+								</div>
+
+								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Fecha de Nacimiento<b class="text-danger">*</b></label>
 									<input class="form-control date @error('birthday') is-invalid @enderror" type="text" name="birthday" required placeholder="Seleccione una fecha de nacimiento" value="{{ $employee->birthday->format('d-m-Y') }}" id="flatpickr">
 								</div>
@@ -69,6 +74,16 @@
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Correo Electrónico</label>
 									<input class="form-control" type="text" disabled value="{{ $employee->email }}">
+								</div>
+
+								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Tipo<b class="text-danger">*</b></label>
+									<select class="form-control @error('type') is-invalid @enderror" name="type" required>
+										<option value="">Seleccione</option>
+										@foreach($roles as $role)
+										<option @if(!is_null($employee->roles) && $employee->hasRole($employee->roles[0]->name) && $employee->roles[0]->name==$role) selected @endif>{{ $role }}</option>
+										@endforeach
+									</select>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">

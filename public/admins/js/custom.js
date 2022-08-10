@@ -134,6 +134,14 @@ function GetIEVersion() {
 }
 
 //////// Scripts ////////
+function errorNotification() {
+  Lobibox.notify('error', {
+    title: 'Error',
+    sound: true,
+    msg: 'Ha ocurrido un problema, inténtelo de nuevo.'
+  });
+}
+
 $(document).ready(function() {
   //Validación para introducir solo números
   $('.number, #phone').keypress(function() {
@@ -270,8 +278,36 @@ $(document).ready(function() {
   }
 
   // Inputmask
-  $('#maskLicense').inputmask("CM-9999-999");
-  $('#maskHarvest').inputmask("H9.9");
+  if ($('#maskLicense').length) {
+    $('#maskLicense').inputmask("CM-9999-999");
+  }
+
+  if ($('#maskHarvest').length) {
+    $('#maskHarvest').inputmask("H9.9");
+  }
+
+  // touchspin
+  if ($('.min-decimal-grams').length) {
+    $(".min-decimal-grams").TouchSpin({
+      min: 0,
+      max: 999999999,
+      step: 0.01,
+      decimals: 2,
+      postfix: 'g',
+      buttondown_class: 'btn btn-primary pt-2 pb-3',
+      buttonup_class: 'btn btn-primary pt-2 pb-3',
+      postfix_extraclass: "d-flex align-items-center bg-light-gray px-2"
+    });
+  }
+
+  if ($('.qty-plants').length) {
+    $(".qty-plants").TouchSpin({
+      min: 1,
+      max: 6,
+      buttondown_class: 'btn btn-primary pt-2 pb-3',
+      buttonup_class: 'btn btn-primary pt-2 pb-3'
+    });
+  }
 });
 
 // funcion para cambiar el input hidden al cambiar el switch de estado
@@ -344,6 +380,11 @@ function activeHarvest(slug) {
   $('#formActiveHarvest').attr('action', '/admin/cosechas/' + slug + '/activar');
 }
 
+function emptyContainer(id) {
+  $("#emptyContainer").modal();
+  $('#formEmptyContainer').attr('action', '/admin/etapas/trimmiado/' + id + '/vaciar');
+}
+
 //funciones para preguntar al eliminar
 function deleteUser(slug) {
   $("#deleteUser").modal();
@@ -374,3 +415,80 @@ function deleteHarvest(slug) {
   $("#deleteHarvest").modal();
   $('#formDeleteHarvest').attr('action', '/admin/cosechas/' + slug);
 }
+
+// Agregar recipientes en select
+$('#selectStrains, #selectRooms, #selectHarvests').change(function() {
+  var strain=$('#selectStrains option:selected').val(), room=$('#selectRooms option:selected').val(), harvest=$('#selectHarvests option:selected').val();
+  $('#selectContainers option').remove();
+  $('#selectContainers').append($('<option>', {
+    value: '',
+    text: 'Seleccione'
+  }));
+  if (strain!="" && room!="" && harvest!="") {
+    $.ajax({
+      url: '/recipientes/curados',
+      type: 'POST',
+      dataType: 'json',
+      data: {strain: strain, room: room, harvest: harvest},
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    })
+    .done(function(obj) {
+      if (obj.state) {
+        $('#selectContainers option[value!=""]').remove();
+        for (var i=obj.data.length-1; i>=0; i--) {
+          $('#selectContainers').append($('<option>', {
+            value: obj.data[i].slug,
+            text: obj.data[i].name+' (Uso: '+obj.data[i].use+'/'+obj.setting.qty_plants+')'
+          }));
+        }
+      } else {
+        errorNotification();
+      }
+    })
+    .fail(function() {
+      errorNotification();
+    });
+  }
+});
+
+// Obtener datos de un recipiente
+$('#selectContainers').change(function() {
+  $('.plants_error').addClass('d-none');
+  var container=$('#selectContainers option:selected').val(), use=parseInt($('#selectContainers option:selected').attr('use'));
+  if (container!="" && use>0) {
+    $.ajax({
+      url: '/recipientes/curados',
+      type: 'GET',
+      dataType: 'json',
+      data: {container: container}
+    })
+    .done(function(obj) {
+      if (obj.state) {
+        if (obj.setting.qty_plants>=obj.count_plants) {
+          for (var i=0; i<=obj.setting.qty_plants-1; i++) {
+            if (i<=obj.count_plants-1) {
+              $('#plants_'+i).val(obj.data.plants[i].code);
+            }
+          }
+        } else {
+          for (var i=0; i<=obj.setting.qty_plants-1; i++) {
+            if ($('#plants_'+i).length) {
+              $('#plants_'+i).val(obj.data.plants[i].code);
+            } else {
+              $('.plants_error').removeClass('d-none');
+            }
+          }
+        }
+        $('#waste').val(obj.data.waste);
+        $('#flower').val(obj.data.flower);
+      } else {
+        errorNotification();
+      }
+    })
+    .fail(function() {
+      errorNotification();
+    });
+  }
+});

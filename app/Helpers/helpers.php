@@ -149,3 +149,12 @@ function image_exist($file_route, $image, $user_image=false, $large=true) {
 
 	return $img;
 }
+
+function containerUse($use, $total) {
+	if ($use==0) {
+		return '<span class="badge badge-danger">'.$use.'/'.$total.'</span>';
+	} elseif ($use==$total) {
+		return '<span class="badge badge-success">'.$use.'/'.$total.'</span>';
+	}
+	return '<span class="badge badge-dark">'.$use.'/'.$total.'</span>';
+}

@@ -55,6 +55,11 @@
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
+									<label class="col-form-label">Teléfono<b class="text-danger">*</b></label>
+									<input class="form-control number @error('phone') is-invalid @enderror" type="text" name="phone" required placeholder="Introduzca un teléfono" value="{{ $user->phone }}">
+								</div>
+
+								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Correo Electrónico</label>
 									<input class="form-control" type="text" disabled value="{{ $user->email }}">
 								</div>

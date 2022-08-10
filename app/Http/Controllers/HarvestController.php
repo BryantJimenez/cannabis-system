@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Strain;
 use App\Models\Harvest;
 use App\Http\Requests\Harvest\HarvestStoreRequest;
 use App\Http\Requests\Harvest\HarvestUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HarvestController extends Controller
 {
@@ -41,6 +43,19 @@ class HarvestController extends Controller
         } else {
             return redirect()->route('harvests.create')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.'])->withInputs();
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Harvest $harvest) {
+        $strains=Strain::with(['stages' => function($query) use ($harvest) {
+            $query->where('harvest_id', $harvest->id);
+        }])->get();
+        return view('admin.harvests.show', compact('harvest', 'strains'));
     }
 
     /**

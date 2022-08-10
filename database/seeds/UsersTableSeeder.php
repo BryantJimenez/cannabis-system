@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
             'lastname' => 'Admin',
         	'photo' => 'usuario.png',
         	'slug' => 'super-admin',
+            'phone' => '12345678',
         	'email' => 'admin@gmail.com',
         	'password' => bcrypt('12345678'),
         	'state' => "1"
@@ -24,5 +25,7 @@ class UsersTableSeeder extends Seeder
 
         $user=User::find(1);
         $user->assignRole('Super Admin');
+
+
     }
 }

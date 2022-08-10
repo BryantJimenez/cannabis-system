@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 /////////////////////////////////////// AUTH /////////////////////////////////////////////////
 Auth::routes();
 Route::get('/usuarios/email', 'AdminController@emailVerifyAdmin');
+Route::get('/plantas/codigo/{container?}', 'AdminController@codeVerifyPlant');
+Route::get('/recipientes/curados', 'AdminController@containerCured')->middleware('permission:stages.cured.create');
+Route::post('/recipientes/curados', 'AdminController@containersCured')->middleware('permission:stages.trimmed.create');
 
 ///////////////////////////////////////// WEB ////////////////////////////////////////////////
 Route::get('/', function() {
@@ -110,5 +113,44 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::delete('/{harvest:slug}', 'HarvestController@destroy')->name('harvests.delete')->middleware('permission:harvests.delete');
 		Route::put('/{harvest:slug}/activar', 'HarvestController@activate')->name('harvests.activate')->middleware('permission:harvests.active');
 		Route::put('/{harvest:slug}/desactivar', 'HarvestController@deactivate')->name('harvests.deactivate')->middleware('permission:harvests.deactive');
+	});
+
+	// Stages
+	Route::prefix('etapas')->group(function () {
+		Route::prefix('curado')->group(function () {
+			// Cured
+			Route::get('/', 'StageController@curedIndex')->name('stages.cured.index')->middleware('permission:stages.cured.index');
+			Route::get('/registrar', 'StageController@curedCreate')->name('stages.cured.create')->middleware('permission:stages.cured.create');
+			Route::post('/', 'StageController@curedStore')->name('stages.cured.store')->middleware('permission:stages.cured.create');
+			Route::get('/{stage:id}', 'StageController@curedShow')->name('stages.cured.show')->middleware('permission:stages.cured.show');
+		});
+		Route::prefix('trimmiado')->group(function () {
+			// Trimmed
+			Route::get('/', 'StageController@trimmedIndex')->name('stages.trimmed.index')->middleware('permission:stages.trimmed.index');
+			Route::get('/registrar', 'StageController@trimmedCreate')->name('stages.trimmed.create')->middleware('permission:stages.trimmed.create');
+			Route::post('/', 'StageController@trimmedStore')->name('stages.trimmed.store')->middleware('permission:stages.trimmed.create');
+			Route::get('/{stage:id}', 'StageController@trimmedShow')->name('stages.trimmed.show')->middleware('permission:stages.trimmed.show');
+			Route::put('/{stage:id}/vaciar', 'StageController@empty')->name('stages.trimmed.empty')->middleware('permission:stages.trimmed.empty');
+		});
+	});
+
+	// Records
+	Route::prefix('registros')->group(function () {
+		Route::prefix('curado')->group(function () {
+			// Cured
+			Route::get('/', 'RecordController@curedIndex')->name('records.cured.index')->middleware('permission:records.cured.index');
+			Route::get('/{stage:id}', 'RecordController@curedShow')->name('records.cured.show')->middleware('permission:records.cured.show');
+		});
+		Route::prefix('trimmiado')->group(function () {
+			// Trimmed
+			Route::get('/', 'RecordController@trimmedIndex')->name('records.trimmed.index')->middleware('permission:records.trimmed.index');
+			Route::get('/{stage:id}', 'RecordController@trimmedShow')->name('records.trimmed.show')->middleware('permission:records.trimmed.show');
+		});
+	});
+
+	// Settings
+	Route::prefix('ajustes')->group(function () {
+		Route::get('/', 'SettingController@edit')->name('settings.edit')->middleware('permission:settings.edit');
+		Route::put('/', 'SettingController@update')->name('settings.update')->middleware('permission:settings.edit');
 	});
 });

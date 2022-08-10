@@ -49,4 +49,8 @@ class Room extends Model
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->slugsShouldBeNoLongerThan(191)->doNotGenerateSlugsOnUpdate();
     }
+
+    public function stages() {
+        return $this->hasMany(Stage::class);
+    }
 }

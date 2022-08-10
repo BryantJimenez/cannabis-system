@@ -152,7 +152,23 @@ return [
         'password_confirmation' => 'confirmar contraseña',
         'state'                 => 'estado',
         'birthday'              => 'fecha de nacimiento',
-        'license'               => 'licencia ocupacional'
+        'license'               => 'licencia ocupacional',
+        'strain_id'             => 'cepa',
+        'room_id'               => 'cuarto',
+        'harvest_id'            => 'cosecha',
+        'container_id'          => 'recipiente',
+        'plants'                => 'plantas',
+        'plants.*'              => 'planta',
+        'flower'                => 'flor',
+        'flower_confirmation'   => 'flor confirmación',
+        'larf'                  => 'larf',
+        'larf_confirmation'     => 'larf confirmación',
+        'trim'                  => 'trim',
+        'trim_confirmation'     => 'trim confirmación',
+        'waste'                 => 'desperdicios',
+        'waste_confirmation'    => 'desperdicios confirmación',
+        'note'                  => 'nota',
+        'qty_plants'            => 'cantidad de plantas'
     ],
 ];
 ?>

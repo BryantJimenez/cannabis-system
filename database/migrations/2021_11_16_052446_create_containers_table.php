@@ -17,6 +17,7 @@ class CreateContainersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->integer('use')->default(0)->unsigned();
             $table->enum('state', [0, 1])->default(1);
             $table->timestamps();
             $table->softDeletes();

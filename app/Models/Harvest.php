@@ -37,7 +37,7 @@ class Harvest extends Model
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        $harvest=$this->where($field, $value)->first();
+        $harvest=$this->with(['stages'])->where($field, $value)->first();
         if (!is_null($harvest)) {
             return $harvest;
         }
@@ -48,5 +48,9 @@ class Harvest extends Model
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->slugsShouldBeNoLongerThan(191)->doNotGenerateSlugsOnUpdate();
+    }
+
+    public function stages() {
+        return $this->hasMany(Stage::class);
     }
 }
