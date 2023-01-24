@@ -30,7 +30,7 @@
 						@include('admin.partials.errors')
 
 						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
-						<form action="{{ route('containers.update', ['container' => $container->slug]) }}" method="POST" class="form" id="formContainer">
+						<form action="{{ route('containers.update', ['contain' => $container->slug]) }}" method="POST" class="form" id="formContainer">
 							@csrf
 							@method('PUT')
 							<div class="row">

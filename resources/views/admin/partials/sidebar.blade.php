@@ -46,6 +46,17 @@
             </li>
             @endif
 
+            @can('statistics.index')
+            <li class="menu {{ active('admin/estadisticas') }}">
+                <a href="{{ route('statistics.index') }}" aria-expanded="{{ menu_expanded('admin/estadisticas') }}" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        <span> Estadísticas</span>
+                    </div>
+                </a>
+            </li>
+            @endcan
+
             @if(auth()->user()->can('users.index') || auth()->user()->can('employees.index'))
             <li class="menu {{ active(['admin/usuarios', 'admin/trabajadores'], 0) }}">
                 <a href="#users" data-toggle="collapse" aria-expanded="{{ menu_expanded(['admin/usuarios', 'admin/trabajadores'], 0) }}" class="dropdown-toggle">
@@ -138,6 +149,17 @@
                 </ul>
             </li>
             @endif
+
+            @can('logs.index')
+            <li class="menu {{ active('admin/bitacora') }}">
+                <a href="{{ route('logs.index') }}" aria-expanded="{{ menu_expanded('admin/bitacora') }}" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-server"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                        <span> Bitacora</span>
+                    </div>
+                </a>
+            </li>
+            @endcan
         </ul>
 
     </nav>

@@ -96,7 +96,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 		Route::post('/', 'ContainerController@store')->name('containers.store')->middleware('permission:containers.create');
 		Route::get('/{container:slug}', 'ContainerController@show')->name('containers.show')->middleware('permission:containers.show');
 		Route::get('/{container:slug}/editar', 'ContainerController@edit')->name('containers.edit')->middleware('permission:containers.edit');
-		Route::put('/{container:slug}', 'ContainerController@update')->name('containers.update')->middleware('permission:containers.edit');
+		Route::put('/{contain:slug}', 'ContainerController@update')->name('containers.update')->middleware('permission:containers.edit');
 		Route::delete('/{container:slug}', 'ContainerController@destroy')->name('containers.delete')->middleware('permission:containers.delete');
 		Route::put('/{container:slug}/activar', 'ContainerController@activate')->name('containers.activate')->middleware('permission:containers.active');
 		Route::put('/{container:slug}/desactivar', 'ContainerController@deactivate')->name('containers.deactivate')->middleware('permission:containers.deactive');
@@ -123,6 +123,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 			Route::get('/registrar', 'StageController@curedCreate')->name('stages.cured.create')->middleware('permission:stages.cured.create');
 			Route::post('/', 'StageController@curedStore')->name('stages.cured.store')->middleware('permission:stages.cured.create');
 			Route::get('/{stage:id}', 'StageController@curedShow')->name('stages.cured.show')->middleware('permission:stages.cured.show');
+			Route::delete('/{stage:id}', 'StageController@curedDestroy')->name('stages.cured.delete')->middleware('permission:stages.cured.delete');
 		});
 		Route::prefix('trimmiado')->group(function () {
 			// Trimmed
@@ -130,6 +131,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 			Route::get('/registrar', 'StageController@trimmedCreate')->name('stages.trimmed.create')->middleware('permission:stages.trimmed.create');
 			Route::post('/', 'StageController@trimmedStore')->name('stages.trimmed.store')->middleware('permission:stages.trimmed.create');
 			Route::get('/{stage:id}', 'StageController@trimmedShow')->name('stages.trimmed.show')->middleware('permission:stages.trimmed.show');
+			Route::delete('/{stage:id}', 'StageController@trimmedDestroy')->name('stages.trimmed.delete')->middleware('permission:stages.trimmed.delete');
 			Route::put('/{stage:id}/vaciar', 'StageController@empty')->name('stages.trimmed.empty')->middleware('permission:stages.trimmed.empty');
 		});
 	});
@@ -146,6 +148,20 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 			Route::get('/', 'RecordController@trimmedIndex')->name('records.trimmed.index')->middleware('permission:records.trimmed.index');
 			Route::get('/{stage:id}', 'RecordController@trimmedShow')->name('records.trimmed.show')->middleware('permission:records.trimmed.show');
 		});
+	});
+
+	// Statistics
+	Route::prefix('estadisticas')->group(function () {
+		Route::get('/', 'StatisticController@index')->name('statistics.index')->middleware('permission:statistics.index');
+		Route::get('/cosechas/{slug}/pdf', 'StatisticController@pdfHarvest')->name('statistics.harvests.pdf')->middleware('permission:statistics.index');
+		Route::get('/cosechas/{harvest}/cepas/{strain}/empleados/flor', 'StatisticController@excelEmployeesFlower')->name('statistics.harvests.employees.flower.excel')->middleware('permission:statistics.index');
+		Route::get('/cosechas/{harvest}/cepas/{strain}/empleados/larf', 'StatisticController@excelEmployeesLarf')->name('statistics.harvests.employees.larf.excel')->middleware('permission:statistics.index');
+	});
+
+	// Logs
+	Route::prefix('bitacora')->group(function () {
+		Route::get('/', 'LogController@index')->name('logs.index')->middleware('permission:logs.index');
+		Route::delete('/{log:id}', 'LogController@destroy')->name('logs.delete')->middleware('permission:logs.delete');
 	});
 
 	// Settings

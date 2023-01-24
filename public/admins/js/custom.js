@@ -277,13 +277,35 @@ $(document).ready(function() {
     });
   }
 
+  if ($('#startDateSearchFlatpickr').length && $('#endDateSearchFlatpickr').length) {
+    var startFlatpickr=flatpickr(document.getElementById('startDateSearchFlatpickr'), {
+      locale: 'es',
+      enableTime: false,
+      dateFormat: "d-m-Y",
+      time_24hr: false,
+      onChange: function(selectedDates, dateStr, instance) {
+        endFlatpickr.set("minDate", $("#startDateSearchFlatpickr").val());
+      }
+    });
+
+    var endFlatpickr=flatpickr(document.getElementById('endDateSearchFlatpickr'), {
+      locale: 'es',
+      enableTime: false,
+      dateFormat: "d-m-Y",
+      time_24hr: false,
+      onChange: function(selectedDates, dateStr, instance) {
+        startFlatpickr.set("maxDate", $("#endDateSearchFlatpickr").val());
+      }
+    });
+  }
+
   // Inputmask
   if ($('#maskLicense').length) {
     $('#maskLicense').inputmask("CM-9999-999");
   }
 
   if ($('#maskHarvest').length) {
-    $('#maskHarvest').inputmask("H9.9");
+    $('#maskHarvest').inputmask("H9{1,2}.9");
   }
 
   // touchspin
@@ -415,6 +437,27 @@ function deleteHarvest(slug) {
   $("#deleteHarvest").modal();
   $('#formDeleteHarvest').attr('action', '/admin/cosechas/' + slug);
 }
+
+function deleteStageCured(id) {
+  $("#deleteStageCured").modal();
+  $('#formDeleteStageCured').attr('action', '/admin/etapas/curado/' + id);
+}
+
+function deleteStageTrimmed(id) {
+  $("#deleteStageTrimmed").modal();
+  $('#formDeleteStageTrimmed').attr('action', '/admin/etapas/trimmiado/' + id);
+}
+
+function deleteLog(id) {
+  $("#deleteLog").modal();
+  $('#formDeleteLog').attr('action', '/admin/bitacora/' + id);
+}
+
+// Button search clear
+$('#btnSearchClear').click(function(event) {
+  $('.form input, .form select').val('');
+  $('.selectpicker').selectpicker('refresh');
+});
 
 // Agregar recipientes en select
 $('#selectStrains, #selectRooms, #selectHarvests').change(function() {

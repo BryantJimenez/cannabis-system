@@ -11,7 +11,10 @@ use App\Models\Harvest;
 use App\Models\Container;
 use App\Models\PlantStage;
 use App\Http\Requests\Stage\StageCuredStoreRequest;
+use App\Http\Requests\Stage\StageCuredDestroyRequest;
 use App\Http\Requests\Stage\StageTrimmedStoreRequest;
+use App\Http\Requests\Stage\StageTrimmedDestroyRequest;
+use App\Http\Requests\Stage\StageTrimmedEmptyRequest;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -24,9 +27,29 @@ class StageController extends Controller
      */
     public function curedIndex() {
     	if (Auth::user()->hasRole(['Trabajador'])) {
-    		$stages=Stage::where([['type', '1'], ['state', '0'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
+    		$stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where([['type', '1'], ['state', '0'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
     	} else {
-    		$stages=Stage::where([['type', '1'], ['state', '0']])->orderBy('id', 'DESC')->get();
+    		$stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where([['type', '1'], ['state', '0']])->orderBy('id', 'DESC')->get();
     	}
         return view('admin.stages.cured.index', compact('stages'));
     }
@@ -41,7 +64,7 @@ class StageController extends Controller
         $rooms=Room::where('state', '1')->orderBy('name', 'ASC')->get();
         $strains=Strain::where('state', '1')->orderBy('name', 'ASC')->get();
         $harvests=Harvest::where('state', '1')->orderBy('name', 'ASC')->get();
-        $containers=Container::where([['use', '<', $setting->qty_plants], ['state', '1']])->orderByRaw('LENGTH(name)', 'ASC')->orderBy('name', 'ASC')->get();
+        $containers=Container::where([['use', 0], ['state', '1']])->orderByRaw('LENGTH(name)', 'ASC')->orderBy('name', 'ASC')->get();
         return view('admin.stages.cured.create', compact('setting', 'rooms', 'strains', 'harvests', 'containers'));
     }
 
@@ -106,16 +129,66 @@ class StageController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Stage $stage
+     * @return \Illuminate\Http\Response
+     */
+    public function curedDestroy(StageCuredDestroyRequest $request, Stage $stage) {
+        $plants=$stage['plants'];
+        $container=$stage['container'];
+        $plant_stage=PlantStage::where('stage_id', $stage->id)->delete();
+        $stage->forceDelete();
+        if ($stage && $plant_stage) {
+            if (!is_null($container)) {
+                $container->fill(['use' => 0])->save();
+            }
+
+            $plants_text='';
+            foreach ($plants as $key => $plant) {
+                $plants_text.=($key==0) ? $plant->code : ' - '.$plant->code;
+                $plant->forceDelete();
+            }
+
+            $description='Eliminación de cosecha en la etapa de curado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.', Recipiente: '.$container->name.', Plantas eliminadas: '.$plants_text.'.';
+            $this->log('App/Models/Stage', 3, $description, request('note'));
+            return redirect()->route('stages.cured.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'La cosecha ha sido eliminada exitosamente.']);
+        } else {
+            return redirect()->route('stages.cured.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Eliminación fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function trimmedIndex() {
         if (Auth::user()->hasRole(['Trabajador'])) {
-    		$stages=Stage::where([['type', '2'], ['state', '0'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
-    	} else {
-    		$stages=Stage::where([['type', '2'], ['state', '0']])->orderBy('id', 'DESC')->get();
-    	}
+            $stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where([['type', '2'], ['state', '0'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
+        } else {
+            $stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where([['type', '2'], ['state', '0']])->orderBy('id', 'DESC')->get();
+        }
         return view('admin.stages.trimmed.index', compact('stages'));
     }
 
@@ -146,7 +219,7 @@ class StageController extends Controller
         $container=Container::where('slug', request('container_id'))->firstOrFail();
         $stage=Stage::create(['type' => '2', 'plants_count' => $container->use, 'flower' => request('flower'), 'larf' => request('larf'), 'trim' => request('trim'), 'waste' => request('waste'), 'note' => request('note'), 'state' => '0', 'strain_id' => $strain->id, 'room_id' => $room->id, 'harvest_id' => $harvest->id, 'container_id' => $container->id, 'user_id' => Auth::id()]);
         if ($stage) {
-            $cured=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['room_id', $room->id], ['strain_id', $strain->id], ['harvest_id', $harvest->id], ['container_id', $container->id]])->first();
+            $cured=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['room_id', $room->id], ['strain_id', $strain->id], ['harvest_id', $harvest->id], ['container_id', $container->id]])->orderBy('id', 'DESC')->first();
             if (!is_null($cured)) {
                 $cured->fill(['state' => '1'])->save();
                 foreach ($cured['plants'] as $plant) {
@@ -172,7 +245,28 @@ class StageController extends Controller
         return view('admin.stages.trimmed.show', compact('stage'));
     }
 
-    public function empty(Request $request, Stage $stage) {
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Stage $stage
+     * @return \Illuminate\Http\Response
+     */
+    public function trimmedDestroy(StageTrimmedDestroyRequest $request, Stage $stage) {
+        $cured=Stage::with(['plants'])->where([['type', '1'], ['state', '1'], ['room_id', $stage->room_id], ['strain_id', $stage->strain_id], ['harvest_id', $stage->harvest_id], ['container_id', $stage->container_id]])->orderBy('id', 'DESC')->first();
+        $plant_stage=PlantStage::where('stage_id', $stage->id)->delete();
+        $stage->forceDelete();
+        if ($stage && $plant_stage) {
+            $cured->fill(['state' => '0'])->save();
+
+            $description='Eliminación de cosecha en la etapa de trimmiado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.', Recipiente: '.$stage['container']->name.'.';
+            $this->log('App/Models/Stage', 3, $description, request('note'));
+            return redirect()->route('stages.trimmed.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'La cosecha ha sido eliminada exitosamente.']);
+        } else {
+            return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Eliminación fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
+    }
+
+    public function empty(StageTrimmedEmptyRequest $request, Stage $stage) {
         if ($stage->type=='Curado') {
             return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Edición fallida', 'msg' => 'Este recipiente se encuentra en la fase de curado, no lo puedes vaciar.']);
         }
@@ -187,6 +281,8 @@ class StageController extends Controller
 
         $container=$stage['container']->fill(['use' => "0"])->save();
         if ($container) {
+            $description='Vaciado del recipiente "'.$stage['container']->name.'" en la etapa de trimmiado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.'.';
+            $this->log('App/Models/Stage', 4, $description, request('note'));
             return redirect()->route('stages.trimmed.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido vaciado exitosamente.']);
         } else {
             return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);

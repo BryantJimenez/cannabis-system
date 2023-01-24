@@ -88,7 +88,7 @@
 								<span class="h6 text-black"><b>Flor:</b> {{ number_format($stage->flower, 2, ',', '.').'g' }}</span>
 							</li>
 							<li class="contacts-block__item">
-								<span class="h6 text-black"><b>Desperdicios:</b> {{ number_format($stage->flower, 2, ',', '.').'g' }}</span>
+								<span class="h6 text-black"><b>Desperdicios:</b> {{ number_format($stage->waste, 2, ',', '.').'g' }}</span>
 							</li>
 							<li class="contacts-block__item">
 								<span class="h6 text-black"><b>Nota:</b> @if(!is_null($stage->note)){{ $stage->note }}@else{{ 'No Ingresado' }}@endif</span>

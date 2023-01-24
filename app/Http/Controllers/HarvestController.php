@@ -7,7 +7,6 @@ use App\Models\Harvest;
 use App\Http\Requests\Harvest\HarvestStoreRequest;
 use App\Http\Requests\Harvest\HarvestUpdateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class HarvestController extends Controller
 {

@@ -48,7 +48,7 @@
 										<th>Cosecha</th>
 										<th>Recipiente</th>
 										<th>Fecha</th>
-										@if(auth()->user()->can('stages.trimmed.show') || auth()->user()->can('stages.trimmed.empty'))
+										@if(auth()->user()->can('stages.trimmed.show') || auth()->user()->can('stages.trimmed.empty') || auth()->user()->can('stages.trimmed.delete'))
 										<th>Acciones</th>
 										@endif
 									</tr>
@@ -67,17 +67,20 @@
 										<td>{{ $stage['harvest']->name }}</td>
 										<td>{{ $stage['container']->name }}</td>
 										<td>{{ $stage->created_at->format('d-m-Y') }}</td>
-										@if(auth()->user()->can('stages.trimmed.show') || auth()->user()->can('stages.trimmed.empty'))
+										@if(auth()->user()->can('stages.trimmed.show') || auth()->user()->can('stages.trimmed.empty') || auth()->user()->can('stages.trimmed.delete'))
 										<td>
 											<div class="btn-group" role="group">
 												@can('stages.trimmed.show')
 												<a href="{{ route('stages.trimmed.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Ver Detalles"><i class="fa fa-eye"></i></a>
 												@endcan
-												@if($stage->state=='0')
 												@can('stages.trimmed.empty')
+												@if($stage->state=='0')
 												<button type="button" class="btn btn-secondary btn-sm bs-tooltip" title="Vaciar" onclick="emptyContainer('{{ $stage->id }}')"><i class="fa fa-eraser"></i></button>
-												@endcan
 												@endif
+												@endcan
+												@can('stages.trimmed.delete')
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteStageTrimmed('{{ $stage->id }}')"><i class="fa fa-trash"></i></button>
+												@endcan
 											</div>
 										</td>
 										@endif
@@ -95,25 +98,70 @@
 
 </div>
 
+@can('stages.trimmed.delete')
+<div class="modal fade" id="deleteStageTrimmed" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<form action="#" method="POST" class="modal-content" id="formDeleteStageTrimmed">
+			@csrf
+			@method('DELETE')
+			<div class="modal-header">
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este trimmiado?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12">
+						@include('admin.partials.errors')
+						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
+					</div>
+
+					<div class="form-group col-12">
+						<label class="col-form-label">Nota<b class="text-danger">*</b></label>
+						<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+				<button type="submit" class="btn btn-primary" action="stage">Eliminar</button>
+			</div>
+		</form>
+	</div>
+</div>
+@endcan
+
 @can('stages.trimmed.empty')
 <div class="modal fade" id="emptyContainer" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+		<form action="#" method="POST" class="modal-content" id="formEmptyContainer">
+			@csrf
+			@method('PUT')
 			<div class="modal-header">
 				<h5 class="modal-title">¿Estás seguro de que quieres vaciar este recipiente?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12">
+						@include('admin.partials.errors')
+						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
+					</div>
+
+					<div class="form-group col-12">
+						<label class="col-form-label">Nota<b class="text-danger">*</b></label>
+						<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
+					</div>
+				</div>
+			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formEmptyContainer">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Vaciar</button>
-				</form>
+				<button type="submit" class="btn btn-primary" action="stage">Vaciar</button>
 			</div>
-		</div>
+		</form>
 	</div>
 </div>
 @endcan
@@ -128,5 +176,9 @@
 <script src="{{ asset('/admins/vendor/table/datatable/button-ext/buttons.print.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/sweetalerts/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/sweetalerts/custom-sweetalert.js') }}"></script>
+<script src="{{ asset('/admins/vendor/validate/jquery.validate.js') }}"></script>
+<script src="{{ asset('/admins/vendor/validate/additional-methods.js') }}"></script>
+<script src="{{ asset('/admins/vendor/validate/messages_es.js') }}"></script>
+<script src="{{ asset('/admins/js/validate.js') }}"></script>
 <script src="{{ asset('/admins/vendor/lobibox/Lobibox.js') }}"></script>
 @endsection

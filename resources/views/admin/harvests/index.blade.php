@@ -53,12 +53,9 @@
 										<td>{{ $loop->iteration }}</td>
 										<td>{{ $harvest->name }}</td>
 										<td>{!! state($harvest->state) !!}</td>
-										@if(auth()->user()->can('harvests.show') || auth()->user()->can('harvests.edit') || auth()->user()->can('harvests.active') || auth()->user()->can('harvests.deactive') || auth()->user()->can('harvests.delete'))
+										@if(auth()->user()->can('harvests.edit') || auth()->user()->can('harvests.active') || auth()->user()->can('harvests.deactive') || auth()->user()->can('harvests.delete'))
 										<td>
 											<div class="btn-group" role="group">
-												@can('harvests.show')
-												<a href="{{ route('harvests.show', ['harvest' => $harvest->slug]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Ver Detalles"><i class="fa fa-eye"></i></a>
-												@endcan
 												@can('harvests.edit')
 												<a href="{{ route('harvests.edit', ['harvest' => $harvest->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan

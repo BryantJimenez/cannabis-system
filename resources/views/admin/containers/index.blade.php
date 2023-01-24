@@ -71,7 +71,9 @@
 												@endcan
 												@endif
 												@can('containers.delete')
+												@if($container->use==0)
 												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteContainer('{{ $container->slug }}')"><i class="fa fa-trash"></i></button>
+												@endif
 												@endcan
 											</div>
 										</td>

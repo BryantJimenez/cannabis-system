@@ -49,7 +49,7 @@
 										<th>Recipiente</th>
 										<th>Plantas</th>
 										<th>Fecha</th>
-										@if(auth()->user()->can('stages.cured.show'))
+										@if(auth()->user()->can('stages.cured.show') || auth()->user()->can('stages.cured.delete'))
 										<th>Acciones</th>
 										@endif
 									</tr>
@@ -73,11 +73,14 @@
 											@endforeach
 										</td>
 										<td>{{ $stage->created_at->format('d-m-Y') }}</td>
-										@if(auth()->user()->can('stages.cured.show'))
+										@if(auth()->user()->can('stages.cured.show') || auth()->user()->can('stages.cured.delete'))
 										<td>
 											<div class="btn-group" role="group">
 												@can('stages.cured.show')
 												<a href="{{ route('stages.cured.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Ver Detalles"><i class="fa fa-eye"></i></a>
+												@endcan
+												@can('stages.cured.delete')
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteStageCured('{{ $stage->id }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>
@@ -96,6 +99,40 @@
 
 </div>
 
+@can('stages.cured.delete')
+<div class="modal fade" id="deleteStageCured" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<form action="#" method="POST" class="modal-content" id="formDeleteStageCured">
+			@csrf
+			@method('DELETE')
+			<div class="modal-header">
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este curado?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12">
+						@include('admin.partials.errors')
+						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
+					</div>
+
+					<div class="form-group col-12">
+						<label class="col-form-label">Nota<b class="text-danger">*</b></label>
+						<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+				<button type="submit" class="btn btn-primary" action="stage">Eliminar</button>
+			</div>
+		</form>
+	</div>
+</div>
+@endcan
+
 @endsection
 
 @section('scripts')
@@ -106,5 +143,9 @@
 <script src="{{ asset('/admins/vendor/table/datatable/button-ext/buttons.print.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/sweetalerts/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('/admins/vendor/sweetalerts/custom-sweetalert.js') }}"></script>
+<script src="{{ asset('/admins/vendor/validate/jquery.validate.js') }}"></script>
+<script src="{{ asset('/admins/vendor/validate/additional-methods.js') }}"></script>
+<script src="{{ asset('/admins/vendor/validate/messages_es.js') }}"></script>
+<script src="{{ asset('/admins/js/validate.js') }}"></script>
 <script src="{{ asset('/admins/vendor/lobibox/Lobibox.js') }}"></script>
 @endsection

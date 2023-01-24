@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Container;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ContainerUpdateRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class ContainerUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:1|max:191'
+            'name' => 'required|string|min:1|max:191|'.Rule::unique('containers')->ignore($this->slug, 'slug')
         ];
     }
 }

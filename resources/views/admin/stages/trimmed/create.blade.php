@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Etapa de Trimmiado')
+@section('title', 'Crear Etapa de Trimmiado')
 
 @section('links')
 <link rel="stylesheet" href="{{ asset('/admins/vendor/touchspin/jquery.bootstrap-touchspin.min.css') }}">
@@ -16,7 +16,7 @@
 			<div class="widget-header">
 				<div class="row">
 					<div class="col-xl-12 col-md-12 col-sm-12 col-12">
-						<h4>Etapa de Trimmiado</h4>
+						<h4>Crear Etapa de Trimmiado</h4>
 					</div>                 
 				</div>
 			</div>

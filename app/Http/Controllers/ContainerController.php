@@ -62,12 +62,12 @@ class ContainerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ContainerUpdateRequest $request, Container $container) {
-        $container->fill(['name' => request('name')])->save();
-        if ($container) {
-            return redirect()->route('containers.edit', ['container' => $container->slug])->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido editado exitosamente.']);
+    public function update(ContainerUpdateRequest $request, Container $contain) {
+        $contain->fill(['name' => request('name')])->save();
+        if ($contain) {
+            return redirect()->route('containers.edit', ['container' => $contain->slug])->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido editado exitosamente.']);
         } else {
-            return redirect()->route('containers.edit', ['container' => $container->slug])->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+            return redirect()->route('containers.edit', ['container' => $contain->slug])->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
         }
     }
 
@@ -78,6 +78,10 @@ class ContainerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Container $container) {
+        if ($container->use>0) {
+            return redirect()->route('containers.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Eliminación fallida', 'msg' => 'No puedes eliminar este contenedor si esta en uso.']);
+        }
+
         $container->delete();
         if ($container) {
             return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'El recipiente ha sido eliminado exitosamente.']);

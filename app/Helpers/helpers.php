@@ -158,3 +158,30 @@ function containerUse($use, $total) {
 	}
 	return '<span class="badge badge-dark">'.$use.'/'.$total.'</span>';
 }
+
+function calcDays($start, $end) {
+	$days=(strtotime($start)-strtotime($end))/86400;
+	$days=abs($days);
+	$days=floor($days);
+	return $days;
+}
+
+function logModule($module) {
+	if ($module=='App/Models/Stage') {
+		return '<span class="badge badge-primary">PosCosecha</span>';
+	}
+	return '<span class="badge badge-dark">Desconocido</span>';
+}
+
+function logAction($action) {
+	if ($action=='Crear') {
+		return '<span class="badge badge-primary">'.$action.'</span>';
+	} elseif ($action=='Editar') {
+		return '<span class="badge badge-secondary">'.$action.'</span>';
+	} elseif ($action=='Eliminar') {
+		return '<span class="badge badge-danger">'.$action.'</span>';
+	} elseif ($action=='Vaciar') {
+		return '<span class="badge badge-info">'.$action.'</span>';
+	}
+	return '<span class="badge badge-dark">'.$action.'</span>';
+}

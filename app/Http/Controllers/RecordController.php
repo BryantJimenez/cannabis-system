@@ -15,9 +15,29 @@ class RecordController extends Controller
      */
     public function curedIndex() {
     	if (Auth::user()->hasRole(['Trabajador'])) {
-    		$stages=Stage::where([['type', '1'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
+    		$stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where([['type', '1'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
     	} else {
-    		$stages=Stage::where('type', '1')->orderBy('id', 'DESC')->get();
+    		$stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where('type', '1')->orderBy('id', 'DESC')->get();
     	}
         return view('admin.records.cured.index', compact('stages'));
     }
@@ -42,9 +62,29 @@ class RecordController extends Controller
      */
     public function trimmedIndex() {
         if (Auth::user()->hasRole(['Trabajador'])) {
-    		$stages=Stage::where([['type', '2'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
+    		$stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where([['type', '2'], ['user_id', Auth::id()]])->orderBy('id', 'DESC')->get();
     	} else {
-    		$stages=Stage::where('type', '2')->orderBy('id', 'DESC')->get();
+    		$stages=Stage::with(['user' => function($query) {
+                $query->withTrashed();
+            }, 'strain' => function($query) {
+                $query->withTrashed();
+            }, 'room' => function($query) {
+                $query->withTrashed();
+            }, 'harvest' => function($query) {
+                $query->withTrashed();
+            }, 'container' => function($query) {
+                $query->withTrashed();
+            }, 'plants'])->where('type', '2')->orderBy('id', 'DESC')->get();
     	}
         return view('admin.records.trimmed.index', compact('stages'));
     }

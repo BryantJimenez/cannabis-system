@@ -221,10 +221,14 @@ code {
   .header-container .navbar-nav.theme-brand .theme-logo {
     align-self: center;
     opacity: 1;
-    width: 47px; }
-    .header-container .navbar-nav.theme-brand .theme-logo img {
-      width: 48px;
-      height: 48px;
+    width: 140px; }
+    .header-container .navbar-nav.theme-brand .theme-logo img.navbar-logo {
+      width: 135px;
+      height: 75px;
+      border-radius: 5px; }
+    .header-container .navbar-nav.theme-brand .theme-logo img.navbar-icon {
+      width: 65px;
+      height: 60px;
       border-radius: 5px; }
 
 .header-container .navbar-nav .theme-text {

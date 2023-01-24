@@ -24,7 +24,7 @@ class HarvestUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:4|regex:/^[A-Z][0-9].[0-9]{1,}$/'
+            'name' => 'required|string|min:4|regex:/^[A-Z][0-9]{1,2}.[0-9]{1,}$/'
         ];
     }
 }

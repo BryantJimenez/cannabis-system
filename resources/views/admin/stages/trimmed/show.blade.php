@@ -4,6 +4,9 @@
 
 @section('links')
 <link href="{{ asset('/admins/css/users/user-profile.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{{ asset('/admins/vendor/table/datatable/datatables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/admins/vendor/table/datatable/custom_dt_html5.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/admins/vendor/table/datatable/dt-global_style.css') }}">
 @endsection
 
 @section('content')
@@ -91,7 +94,7 @@
 								<span class="h6 text-black"><b>Trim:</b> {{ number_format($stage->trim, 2, ',', '.').'g' }}</span>
 							</li>
 							<li class="contacts-block__item">
-								<span class="h6 text-black"><b>Desperdicios:</b> {{ number_format($stage->flower, 2, ',', '.').'g' }}</span>
+								<span class="h6 text-black"><b>Desperdicios:</b> {{ number_format($stage->waste, 2, ',', '.').'g' }}</span>
 							</li>
 							<li class="contacts-block__item">
 								<span class="h6 text-black"><b>Nota:</b> @if(!is_null($stage->note)){{ $stage->note }}@else{{ 'No Ingresado' }}@endif</span>
@@ -105,6 +108,48 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="col-12 layout-top-spacing">
+
+		<div class="user-profile layout-spacing">
+			<div class="widget-content widget-content-area">
+				<div class="d-flex justify-content-between">
+					<h3 class="pb-3">Plantas del Recipiente</h3>
+				</div>
+				<div class="user-info-list">
+
+					<div class="">
+						<ul class="contacts-block list-unstyled mw-100 mx-2">
+							<li class="contacts-block__item">
+								<div class="table-responsive">
+									<table class="table table-normal table-hover">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Código de Planta</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($stage['plants'] as $plant)
+											<tr>
+												<td>{{ $loop->iteration }}</td>
+												<td>{{ $plant->code }}</td>
+											</tr>
+											@endforeach
+										</tbody>
+									</table>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script src="{{ asset('/admins/vendor/table/datatable/datatables.js') }}"></script>
 @endsection

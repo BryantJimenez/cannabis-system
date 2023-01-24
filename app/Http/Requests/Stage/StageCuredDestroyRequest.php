@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Harvest;
+namespace App\Http\Requests\Stage;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class HarvestStoreRequest extends FormRequest
+class StageCuredDestroyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class HarvestStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:4|regex:/^[A-Z][0-9]{1,2}.[0-9]{1,}$/'
+            'note' => 'required|string|min:1|max:1000'
         ];
     }
 }

@@ -92,4 +92,8 @@ class User extends Authenticatable
     public function stages() {
         return $this->hasMany(Stage::class);
     }
+
+    public function logs() {
+        return $this->hasMany(Log::class);
+    }
 }

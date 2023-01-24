@@ -391,7 +391,7 @@ $(document).ready(function(){
 				name: {
 					required: true,
 					minlength: 4,
-					pattern: '^[A-Z][0-9].[0-9]{1,}$'
+					pattern: '^[A-Z][0-9]{1,2}.[0-9]{1,}$'
 				}
 			},
 			messages:
@@ -529,6 +529,24 @@ $(document).ready(function(){
 		});
 	});
 
+	// Stage Cured Delete
+	$("button[action='stage']").on("click",function(){
+		$("#formDeleteStageCured").validate({
+			rules:
+			{
+				note: {
+					required: true,
+					minlength: 1,
+					maxlength: 1000
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='stage']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
+
 	// Stage Trimmed
 	$("button[action='stage']").on("click",function(){
 		$("#formStageTrimmed").validate({
@@ -625,6 +643,42 @@ $(document).ready(function(){
 		});
 	});
 
+	// Stage Trimmed Delete
+	$("button[action='stage']").on("click",function(){
+		$("#formDeleteStageTrimmed").validate({
+			rules:
+			{
+				note: {
+					required: true,
+					minlength: 1,
+					maxlength: 1000
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='stage']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
+
+	// Stage Trimmed Empty
+	$("button[action='stage']").on("click",function(){
+		$("#formEmptyContainer").validate({
+			rules:
+			{
+				note: {
+					required: true,
+					minlength: 1,
+					maxlength: 1000
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='stage']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
+
 	// Settings
 	$("button[action='setting']").on("click",function(){
 		$("#formSetting").validate({
@@ -638,6 +692,40 @@ $(document).ready(function(){
 			},
 			submitHandler: function(form) {
 				$("button[action='setting']").attr('disabled', true);
+				form.submit();
+			}
+		});
+	});
+
+	// Statistics Search
+	$("button[action='search']").on("click",function(){
+		$("#formSearchStatistic").validate({
+			rules:
+			{
+				harvest_id: {
+					required: true
+				},
+
+				start: {
+					required: false,
+					date: false,
+					time: false
+				},
+
+				end: {
+					required: false,
+					date: false,
+					time: false
+				}
+			},
+			messages:
+			{
+				harvest_id: {
+					required: "Seleccione una opción."
+				}
+			},
+			submitHandler: function(form) {
+				$("button[action='search']").attr('disabled', true);
 				form.submit();
 			}
 		});
