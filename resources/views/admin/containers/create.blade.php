@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Crear Recipiente')
+@section('title', 'Crear Compartimento')
 
 @section('links')
 <link rel="stylesheet" href="{{ asset('/admins/vendor/lobibox/Lobibox.min.css') }}">
@@ -15,7 +15,7 @@
 			<div class="widget-header">
 				<div class="row">
 					<div class="col-xl-12 col-md-12 col-sm-12 col-12">
-						<h4>Crear Recipiente</h4>
+						<h4>Crear Compartimento</h4>
 					</div>                 
 				</div>
 			</div>

@@ -62,7 +62,7 @@
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
-									<label class="col-form-label">Recipiente<b class="text-danger">*</b></label>
+									<label class="col-form-label">Compartimento<b class="text-danger">*</b></label>
 									<select class="form-control" name="container_id" required id="selectContainers">
 										<option value="">Seleccione</option>
 										@foreach($containers as $container)
@@ -75,16 +75,28 @@
 									<h6 class="font-weight-bold">Plantas</h6>
 								</div>
 
-								@for($i=0; $i<$setting->qty_plants; $i++)
-								<div class="form-group col-lg-6 col-md-6 col-12">
-									<label class="col-form-label">Planta {{ $i+1 }}@if($i==0)<b class="text-danger">*</b>@else{{ ' (Opcional)' }}@endif</label>
-									<input class="form-control @error('plants.'.$i) is-invalid @enderror" type="text" @if($i==0) name="plants[{{ $i }}]" required @else name="plants[]" @endif placeholder="Introduzca el código de la planta" value="{{ old('plants.'.$i) }}" id="{{ 'plants_'.$i }}">
+								<div class="col-12">
+									<div class="row" id="divPlants">
+										@if(is_null(old('plants')))
+										@for($i=0; $i<$setting->qty_plants; $i++)
+										<div class="form-group col-lg-6 col-md-6 col-12">
+											<label class="col-form-label">Planta {{ $i+1 }}@if($i==0)<b class="text-danger">*</b>@else{{ ' (Opcional)' }}@endif</label>
+											<input class="form-control @error('plants.'.$i) is-invalid @enderror" type="text" @if($i==0) name="plants[{{ $i }}]" required @else name="plants[]" @endif placeholder="Introduzca el código de la planta" value="{{ old('plants.'.$i) }}" id="{{ 'plants_'.$i }}">
+										</div>
+										@endfor
+										@else
+										@for($i=0; $i<count(old('plants')); $i++)
+										<div class="form-group col-lg-6 col-md-6 col-12">
+											<label class="col-form-label">Planta {{ $i+1 }}@if($i==0)<b class="text-danger">*</b>@else{{ ' (Opcional)' }}@endif</label>
+											<input class="form-control @error('plants.'.$i) is-invalid @enderror" type="text" @if($i==0) name="plants[{{ $i }}]" required @else name="plants[]" @endif placeholder="Introduzca el código de la planta" value="{{ old('plants.'.$i) }}" id="{{ 'plants_'.$i }}">
+										</div>
+										@endfor
+										@endif
+									</div>
 								</div>
-								@endfor
 
 								<div class="col-12">
 									<p class="duplicate-error text-danger font-weight-bold d-none">Escribiste códigos duplicados.</p>
-									<p class="plants_error text-danger font-weight-bold d-none">Este recipiente tiene más plantas de las recomendadas.</p>
 								</div>
 
 								<div class="col-12">

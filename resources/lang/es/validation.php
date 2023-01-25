@@ -156,7 +156,7 @@ return [
         'strain_id'             => 'cepa',
         'room_id'               => 'cuarto',
         'harvest_id'            => 'cosecha',
-        'container_id'          => 'recipiente',
+        'container_id'          => 'compartimento',
         'plants'                => 'plantas',
         'plants.*'              => 'planta',
         'flower'                => 'flor',

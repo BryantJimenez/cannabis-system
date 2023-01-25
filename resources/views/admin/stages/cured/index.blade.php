@@ -46,7 +46,7 @@
 										<th>Cepa</th>
 										<th>Cuarto</th>
 										<th>Cosecha</th>
-										<th>Recipiente</th>
+										<th>Compartimento</th>
 										<th>Plantas</th>
 										<th>Fecha</th>
 										@if(auth()->user()->can('stages.cured.show') || auth()->user()->can('stages.cured.delete'))
@@ -60,7 +60,7 @@
 										<td>{{ $loop->iteration }}</td>
 										@if(!Auth::user()->hasRole(['Trabajador']))
 										<td class="d-flex align-items-center">
-											<img src="{{ image_exist('/admins/img/users/', $stage['user']->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $stage['user']->name." ".$stage['user']->lastname }}" title="{{ $stage['user']->name." ".$stage['user']->lastname }}"> {{ $stage['user']->name." ".$stage['user']->lastname }}
+											<img src="{{ image_exist('/admins/img/users/', $stage['user']->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $stage['user']->fullname }}" title="{{ $stage['user']->fullname }}"> {{ $stage['user']->fullname }}
 										</td>
 										@endif
 										<td>{{ $stage['strain']->name }}</td>
@@ -77,10 +77,10 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('stages.cured.show')
-												<a href="{{ route('stages.cured.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Ver Detalles"><i class="fa fa-eye"></i></a>
+												<a href="{{ route('stages.cured.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip mr-0" title="Ver Detalles"><i class="fa fa-eye"></i></a>
 												@endcan
 												@can('stages.cured.delete')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteStageCured('{{ $stage->id }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteStageCured('{{ $stage->id }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>

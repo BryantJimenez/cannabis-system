@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('/usuarios/email', 'AdminController@emailVerifyAdmin');
 Route::get('/plantas/codigo/{container?}', 'AdminController@codeVerifyPlant');
-Route::get('/recipientes/curados', 'AdminController@containerCured')->middleware('permission:stages.cured.create');
-Route::post('/recipientes/curados', 'AdminController@containersCured')->middleware('permission:stages.trimmed.create');
+Route::get('/compartimentos/curados', 'AdminController@containerCured')->middleware('permission:stages.cured.create');
+Route::post('/compartimentos/curados', 'AdminController@containersCured')->middleware('permission:stages.trimmed.create');
 
 ///////////////////////////////////////// WEB ////////////////////////////////////////////////
 Route::get('/', function() {
@@ -90,7 +90,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 	});
 
 	// Containers
-	Route::prefix('recipientes')->group(function () {
+	Route::prefix('compartimentos')->group(function () {
 		Route::get('/', 'ContainerController@index')->name('containers.index')->middleware('permission:containers.index');
 		Route::get('/registrar', 'ContainerController@create')->name('containers.create')->middleware('permission:containers.create');
 		Route::post('/', 'ContainerController@store')->name('containers.store')->middleware('permission:containers.create');

@@ -79,10 +79,10 @@
 								<span class="h6 text-black"><b>Cosecha:</b> {{ $stage['harvest']->name }}</span>
 							</li>
 							<li class="contacts-block__item">
-								<span class="h6 text-black"><b>Recipiente:</b> {{ $stage['container']->name }}</span>
+								<span class="h6 text-black"><b>Compartimento:</b> {{ $stage['container']->name }}</span>
 							</li>
 							<li class="contacts-block__item">
-								<span class="h6 text-black"><b>Plantas en el Recipiente:</b> {{ $stage->plants_count }}</span>
+								<span class="h6 text-black"><b>Plantas en el Compartimento:</b> {{ $stage->plants_count }}</span>
 							</li>
 							<li class="contacts-block__item">
 								<span class="h6 text-black"><b>Flor:</b> {{ number_format($stage->flower, 2, ',', '.').'g' }}</span>
@@ -108,7 +108,7 @@
 		<div class="user-profile layout-spacing">
 			<div class="widget-content widget-content-area">
 				<div class="d-flex justify-content-between">
-					<h3 class="pb-3">Plantas del Recipiente</h3>
+					<h3 class="pb-3">Plantas del Compartimento</h3>
 				</div>
 				<div class="user-info-list">
 

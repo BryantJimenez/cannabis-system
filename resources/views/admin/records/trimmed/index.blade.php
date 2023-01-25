@@ -40,7 +40,7 @@
 										<th>Cepa</th>
 										<th>Cuarto</th>
 										<th>Cosecha</th>
-										<th>Recipiente</th>
+										<th>Compartimento</th>
 										<th>Fecha</th>
 										@if(auth()->user()->can('records.trimmed.show'))
 										<th>Acciones</th>

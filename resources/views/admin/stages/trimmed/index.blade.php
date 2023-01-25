@@ -46,7 +46,7 @@
 										<th>Cepa</th>
 										<th>Cuarto</th>
 										<th>Cosecha</th>
-										<th>Recipiente</th>
+										<th>Compartimento</th>
 										<th>Fecha</th>
 										@if(auth()->user()->can('stages.trimmed.show') || auth()->user()->can('stages.trimmed.empty') || auth()->user()->can('stages.trimmed.delete'))
 										<th>Acciones</th>
@@ -71,15 +71,15 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('stages.trimmed.show')
-												<a href="{{ route('stages.trimmed.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Ver Detalles"><i class="fa fa-eye"></i></a>
+												<a href="{{ route('stages.trimmed.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip mr-0" title="Ver Detalles"><i class="fa fa-eye"></i></a>
 												@endcan
 												@can('stages.trimmed.empty')
 												@if($stage->state=='0')
-												<button type="button" class="btn btn-secondary btn-sm bs-tooltip" title="Vaciar" onclick="emptyContainer('{{ $stage->id }}')"><i class="fa fa-eraser"></i></button>
+												<button type="button" class="btn btn-secondary btn-sm bs-tooltip mr-0" title="Vaciar" onclick="emptyContainer('{{ $stage->id }}')"><i class="fa fa-eraser"></i></button>
 												@endif
 												@endcan
 												@can('stages.trimmed.delete')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteStageTrimmed('{{ $stage->id }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteStageTrimmed('{{ $stage->id }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>
@@ -139,7 +139,7 @@
 			@csrf
 			@method('PUT')
 			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres vaciar este recipiente?</h5>
+				<h5 class="modal-title">¿Estás seguro de que quieres vaciar este compartimento?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

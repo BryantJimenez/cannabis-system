@@ -93,7 +93,7 @@
 														<th>Trabajador</th>
 														<th>Días<br>Trabajados</th>
 														<th>Total de<br>Plantas</th>
-														<th>Total de<br>Recipientes</th>
+														<th>Total de<br>Compartimentos</th>
 														<th>Peso Final<br>de Flor</th>
 														<th>Peso Final<br>de Desperdicios</th>
 													</tr>
@@ -153,7 +153,7 @@
 														<th>#</th>
 														<th>Cepa</th>
 														<th>Total de<br>Plantas</th>
-														<th>Total de<br>Recipientes</th>
+														<th>Total de<br>Compartimentos</th>
 														<th>Peso Final<br>de Flor</th>
 														<th>Peso Final<br>de Desperdicios</th>
 													</tr>
@@ -204,7 +204,7 @@
 														<th>Trabajador</th>
 														<th>Días<br>Trabajados</th>
 														<th>Total de<br>Plantas</th>
-														<th>Total de<br>Recipientes</th>
+														<th>Total de<br>Compartimentos</th>
 														<th>Peso Final<br>de Flor</th>
 														<th>Peso Final<br>de Larf</th>
 														<th>Peso Final<br>de Trim</th>
@@ -261,7 +261,7 @@
 											<tr>
 												<th>#</th>
 												<th>Cepa</th>
-												<th>Total de<br>Recipientes</th>
+												<th>Total de<br>Compartimentos</th>
 												<th>Peso Final<br>de Flor</th>
 												<th>Peso Final<br>de Larf</th>
 												<th>Peso Final<br>de Trim</th>

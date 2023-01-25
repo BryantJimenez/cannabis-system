@@ -35,7 +35,7 @@ class StageCuredStoreRequest extends FormRequest
         $rooms=Room::where('state', '1')->get()->pluck('slug');
         $strains=Strain::where('state', '1')->get()->pluck('slug');
         $harvests=Harvest::where('state', '1')->get()->pluck('slug');
-        $containers=Container::where([['use', 0], ['state', '1']])->get()->pluck('slug');
+        $containers=Container::where([['use', '<', $setting->qty_plants], ['state', '1']])->get()->pluck('slug');
 
         $unique='';
         $plants=[];

@@ -12,7 +12,7 @@ class SettingsSeeder extends Seeder
     public function run()
     {
         $settings = [
-        	['id' => 1, 'qty_plants' => 5]
+        	['id' => 1, 'qty_plants' => 30]
     	];
     	DB::table('settings')->insert($settings);
     }

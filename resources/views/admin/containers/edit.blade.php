@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Editar Recipiente')
+@section('title', 'Editar Compartimento')
 
 @section('links')
 <link href="{{ asset('/admins/vendor/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
@@ -18,7 +18,7 @@
 			<div class="widget-header">
 				<div class="row">
 					<div class="col-xl-12 col-md-12 col-sm-12 col-12">
-						<h4>Editar Recipiente</h4>
+						<h4>Editar Compartimento</h4>
 					</div>                 
 				</div>
 			</div>

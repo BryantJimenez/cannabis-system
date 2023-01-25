@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Container::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->numberBetween($min=1, $max=700),
+        'name' => $faker->unique()->numberBetween($min=1, $max=20),
         'state' => $faker->randomElement(['1', '0'])
     ];
 });

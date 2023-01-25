@@ -384,12 +384,12 @@ function activeRoom(slug) {
 
 function deactiveContainer(slug) {
   $("#deactiveContainer").modal();
-  $('#formDeactiveContainer').attr('action', '/admin/recipientes/' + slug + '/desactivar');
+  $('#formDeactiveContainer').attr('action', '/admin/compartimentos/' + slug + '/desactivar');
 }
 
 function activeContainer(slug) {
   $("#activeContainer").modal();
-  $('#formActiveContainer').attr('action', '/admin/recipientes/' + slug + '/activar');
+  $('#formActiveContainer').attr('action', '/admin/compartimentos/' + slug + '/activar');
 }
 
 function deactiveHarvest(slug) {
@@ -430,7 +430,7 @@ function deleteRoom(slug) {
 
 function deleteContainer(slug) {
   $("#deleteContainer").modal();
-  $('#formDeleteContainer').attr('action', '/admin/recipientes/' + slug);
+  $('#formDeleteContainer').attr('action', '/admin/compartimentos/' + slug);
 }
 
 function deleteHarvest(slug) {
@@ -459,7 +459,7 @@ $('#btnSearchClear').click(function(event) {
   $('.selectpicker').selectpicker('refresh');
 });
 
-// Agregar recipientes en select
+// Agregar compartimentos en select
 $('#selectStrains, #selectRooms, #selectHarvests').change(function() {
   var strain=$('#selectStrains option:selected').val(), room=$('#selectRooms option:selected').val(), harvest=$('#selectHarvests option:selected').val();
   $('#selectContainers option').remove();
@@ -469,7 +469,7 @@ $('#selectStrains, #selectRooms, #selectHarvests').change(function() {
   }));
   if (strain!="" && room!="" && harvest!="") {
     $.ajax({
-      url: '/recipientes/curados',
+      url: '/compartimentos/curados',
       type: 'POST',
       dataType: 'json',
       data: {strain: strain, room: room, harvest: harvest},
@@ -498,34 +498,53 @@ $('#selectStrains, #selectRooms, #selectHarvests').change(function() {
 
 // Obtener datos de un recipiente
 $('#selectContainers').change(function() {
+  $('#divPlants div').remove();
   $('.plants_error').addClass('d-none');
   var container=$('#selectContainers option:selected').val(), use=parseInt($('#selectContainers option:selected').attr('use'));
-  if (container!="" && use>0) {
+  if (container!="") {
     $.ajax({
-      url: '/recipientes/curados',
+      url: '/compartimentos/curados',
       type: 'GET',
       dataType: 'json',
       data: {container: container}
     })
     .done(function(obj) {
       if (obj.state) {
-        if (obj.setting.qty_plants>=obj.count_plants) {
-          for (var i=0; i<=obj.setting.qty_plants-1; i++) {
-            if (i<=obj.count_plants-1) {
-              $('#plants_'+i).val(obj.data.plants[i].code);
-            }
-          }
-        } else {
-          for (var i=0; i<=obj.setting.qty_plants-1; i++) {
-            if ($('#plants_'+i).length) {
-              $('#plants_'+i).val(obj.data.plants[i].code);
-            } else {
-              $('.plants_error').removeClass('d-none');
-            }
+        $('#divPlants div').remove();
+
+        for (var i=0; i<=obj.setting.qty_plants-obj.count_plants-1; i++) {
+          if (i==0) {
+            $('#divPlants').append($('<div>', {
+              class: "form-group col-lg-6 col-md-6 col-12"
+            }).append($('<label>', {
+              class: "col-form-label",
+              text: "Planta "+(i+1)
+            }).append($('<b>', {
+              class: "text-danger",
+              text: "*"
+            }))).append($('<input>', {
+              class: "form-control",
+              type: "text",
+              name: "plants["+i+"]",
+              required: "required",
+              placeholder: "Introduzca el código de la planta",
+              id: "plants_"+i
+            })));
+          } else {
+            $('#divPlants').append($('<div>', {
+              class: "form-group col-lg-6 col-md-6 col-12"
+            }).append($('<label>', {
+              class: "col-form-label",
+              text: "Planta "+(i+1)+" (Opcional)"
+            })).append($('<input>', {
+              class: "form-control",
+              type: "text",
+              name: "plants["+i+"]",
+              placeholder: "Introduzca el código de la planta",
+              id: "plants_"+i
+            })));
           }
         }
-        $('#waste').val(obj.data.waste);
-        $('#flower').val(obj.data.flower);
       } else {
         errorNotification();
       }

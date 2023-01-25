@@ -64,7 +64,12 @@ class StageController extends Controller
         $rooms=Room::where('state', '1')->orderBy('name', 'ASC')->get();
         $strains=Strain::where('state', '1')->orderBy('name', 'ASC')->get();
         $harvests=Harvest::where('state', '1')->orderBy('name', 'ASC')->get();
-        $containers=Container::where([['use', 0], ['state', '1']])->orderByRaw('LENGTH(name)', 'ASC')->orderBy('name', 'ASC')->get();
+        $containers=Container::with(['stages' => function($query) {
+            $query->where([['type', '2'], ['state', '0']]);
+        }])->where([['use', '<', $setting->qty_plants], ['state', '1']])->orderByRaw('LENGTH(name)', 'ASC')->orderBy('name', 'ASC')->get()->reject(function($container) {
+            $bool=($container['stages']->count()==0) ? false : true;
+            return $bool;
+        })->values();
         return view('admin.stages.cured.create', compact('setting', 'rooms', 'strains', 'harvests', 'containers'));
     }
 
@@ -82,36 +87,38 @@ class StageController extends Controller
 
         $stage=Stage::where([['type', '1'], ['state', '0'], ['container_id', $container->id]])->first();
         if (!is_null($stage)) {
-        	$stage->fill(['flower' => request('flower'), 'waste' => request('waste'), 'note' => request('note'), 'strain_id' => $strain->id, 'room_id' => $room->id, 'harvest_id' => $harvest->id, 'container_id' => $container->id, 'user_id' => Auth::id()])->save();
-        	if ($stage) {
-        		PlantStage::where('stage_id', $stage->id)->whereIn('plant_id', $stage['plants']->pluck('id'))->delete();
-        	}
-        } else {
-        	$stage=Stage::create(['type' => '1', 'flower' => request('flower'), 'larf' => NULL, 'trim' => NULL, 'waste' => request('waste'), 'note' => request('note'), 'state' => '0', 'strain_id' => $strain->id, 'room_id' => $room->id, 'harvest_id' => $harvest->id, 'container_id' => $container->id, 'user_id' => Auth::id()]);
+            if ($stage->room_id!=$room->id) {
+                return redirect()->route('stages.cured.create')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Cuarto incorrecto', 'msg' => 'El cuarto seleccionado no coincide con el cuarto ya ingresado.'])->withInput();
+            }
+
+            if ($stage->strain_id!=$strain->id) {
+                return redirect()->route('stages.cured.create')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Cepa incorrecta', 'msg' => 'La cepa seleccionada no coincide con la cepa ya ingresada.'])->withInput();
+            }
+
+            if ($stage->harvest_id!=$harvest->id) {
+                return redirect()->route('stages.cured.create')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Cosecha incorrecta', 'msg' => 'La cosecha seleccionada no coincide con la cosecha ya ingresada.'])->withInput();
+            }
         }
+
+        $stage=Stage::create(['type' => '1', 'flower' => request('flower'), 'larf' => NULL, 'trim' => NULL, 'waste' => request('waste'), 'note' => request('note'), 'state' => '0', 'strain_id' => $strain->id, 'room_id' => $room->id, 'harvest_id' => $harvest->id, 'container_id' => $container->id, 'user_id' => Auth::id()]);
         
         if ($stage) {
             $i=0;
             if (!is_null(request('plants')) && !empty(request('plants'))) {
                 foreach (request('plants') as $value) {
                     if (!is_null($value) && !empty($value)) {
-                        $plant=Plant::where('code', $value)->first();
-                        if (!is_null($plant)) {
-                            PlantStage::create(['plant_id' => $plant->id, 'stage_id' => $stage->id]);
-                        } else {
-                            $plant=Plant::create(['code' => $value]);
-                            PlantStage::create(['plant_id' => $plant->id, 'stage_id' => $stage->id]);
-                        }
+                        $plant=Plant::create(['code' => $value]);
+                        PlantStage::create(['plant_id' => $plant->id, 'stage_id' => $stage->id]);
                         $i++;
                     }
                 }
             }
-            $container->fill(['use' => $i])->save();
+            $container->fill(['use' => $container->use+$i])->save();
             $stage->fill(['plants_count' => $i])->save();
             
             return redirect()->route('stages.cured.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El curado ha sido registrado exitosamente.']);
         } else {
-            return redirect()->route('stages.cured.create')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.'])->withInputs();
+            return redirect()->route('stages.cured.create')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.'])->withInput();
         }
     }
 
@@ -136,12 +143,13 @@ class StageController extends Controller
      */
     public function curedDestroy(StageCuredDestroyRequest $request, Stage $stage) {
         $plants=$stage['plants'];
+        $use=$stage->plants_count;
         $container=$stage['container'];
         $plant_stage=PlantStage::where('stage_id', $stage->id)->delete();
         $stage->forceDelete();
         if ($stage && $plant_stage) {
             if (!is_null($container)) {
-                $container->fill(['use' => 0])->save();
+                $container->fill(['use' => $container->use-$use])->save();
             }
 
             $plants_text='';
@@ -150,7 +158,7 @@ class StageController extends Controller
                 $plant->forceDelete();
             }
 
-            $description='Eliminación de cosecha en la etapa de curado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.', Recipiente: '.$container->name.', Plantas eliminadas: '.$plants_text.'.';
+            $description='Eliminación de cosecha en la etapa de curado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.', Compartimento: '.$container->name.', Plantas eliminadas: '.$plants_text.'.';
             $this->log('App/Models/Stage', 3, $description, request('note'));
             return redirect()->route('stages.cured.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'La cosecha ha sido eliminada exitosamente.']);
         } else {
@@ -219,8 +227,8 @@ class StageController extends Controller
         $container=Container::where('slug', request('container_id'))->firstOrFail();
         $stage=Stage::create(['type' => '2', 'plants_count' => $container->use, 'flower' => request('flower'), 'larf' => request('larf'), 'trim' => request('trim'), 'waste' => request('waste'), 'note' => request('note'), 'state' => '0', 'strain_id' => $strain->id, 'room_id' => $room->id, 'harvest_id' => $harvest->id, 'container_id' => $container->id, 'user_id' => Auth::id()]);
         if ($stage) {
-            $cured=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['room_id', $room->id], ['strain_id', $strain->id], ['harvest_id', $harvest->id], ['container_id', $container->id]])->orderBy('id', 'DESC')->first();
-            if (!is_null($cured)) {
+            $cureds=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['room_id', $room->id], ['strain_id', $strain->id], ['harvest_id', $harvest->id], ['container_id', $container->id]])->get();
+            foreach ($cureds as $cured) {
                 $cured->fill(['state' => '1'])->save();
                 foreach ($cured['plants'] as $plant) {
                     PlantStage::create(['plant_id' => $plant->id, 'stage_id' => $stage->id]);
@@ -228,7 +236,7 @@ class StageController extends Controller
             }
             return redirect()->route('stages.trimmed.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El trimmiado ha sido registrado exitosamente.']);
         } else {
-            return redirect()->route('stages.trimmed.create')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.'])->withInputs();
+            return redirect()->route('stages.trimmed.create')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.'])->withInput();
         }
     }
 
@@ -252,13 +260,15 @@ class StageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function trimmedDestroy(StageTrimmedDestroyRequest $request, Stage $stage) {
-        $cured=Stage::with(['plants'])->where([['type', '1'], ['state', '1'], ['room_id', $stage->room_id], ['strain_id', $stage->strain_id], ['harvest_id', $stage->harvest_id], ['container_id', $stage->container_id]])->orderBy('id', 'DESC')->first();
+        $cureds=Stage::with(['plants'])->where([['type', '1'], ['state', '1'], ['room_id', $stage->room_id], ['strain_id', $stage->strain_id], ['harvest_id', $stage->harvest_id], ['container_id', $stage->container_id], ['updated_at', '>=', $stage->created_at->format('Y-m-d H:i:s')]])->orderBy('id', 'DESC')->get();
         $plant_stage=PlantStage::where('stage_id', $stage->id)->delete();
         $stage->forceDelete();
         if ($stage && $plant_stage) {
-            $cured->fill(['state' => '0'])->save();
+            foreach ($cureds as $cured) {
+                $cured->fill(['state' => '0'])->save();
+            }
 
-            $description='Eliminación de cosecha en la etapa de trimmiado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.', Recipiente: '.$stage['container']->name.'.';
+            $description='Eliminación de cosecha en la etapa de trimmiado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.', Compartimento: '.$stage['container']->name.'.';
             $this->log('App/Models/Stage', 3, $description, request('note'));
             return redirect()->route('stages.trimmed.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'La cosecha ha sido eliminada exitosamente.']);
         } else {
@@ -268,11 +278,11 @@ class StageController extends Controller
 
     public function empty(StageTrimmedEmptyRequest $request, Stage $stage) {
         if ($stage->type=='Curado') {
-            return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Edición fallida', 'msg' => 'Este recipiente se encuentra en la fase de curado, no lo puedes vaciar.']);
+            return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Edición fallida', 'msg' => 'Este compartimento se encuentra en la fase de curado, no lo puedes vaciar.']);
         }
 
         if ($stage->state=='1') {
-            return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Edición fallida', 'msg' => 'Este recipiente ya ha sido vaciado.']);
+            return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'warning', 'title' => 'Edición fallida', 'msg' => 'Este compartimento ya ha sido vaciado.']);
         }
 
         if ($stage->state=='0') {
@@ -281,9 +291,9 @@ class StageController extends Controller
 
         $container=$stage['container']->fill(['use' => "0"])->save();
         if ($container) {
-            $description='Vaciado del recipiente "'.$stage['container']->name.'" en la etapa de trimmiado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.'.';
+            $description='Vaciado del compartimento "'.$stage['container']->name.'" en la etapa de trimmiado. Creado por: '.$stage['user']->name.' '.$stage['user']->lastname.', Cepa: '.$stage['strain']->name.', Cuarto: '.$stage['room']->name.', Cosecha: '.$stage['harvest']->name.'.';
             $this->log('App/Models/Stage', 4, $description, request('note'));
-            return redirect()->route('stages.trimmed.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido vaciado exitosamente.']);
+            return redirect()->route('stages.trimmed.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El compartimento ha sido vaciado exitosamente.']);
         } else {
             return redirect()->route('stages.trimmed.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
         }

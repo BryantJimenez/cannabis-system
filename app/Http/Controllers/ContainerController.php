@@ -39,7 +39,7 @@ class ContainerController extends Controller
     public function store(ContainerStoreRequest $request) {
         $container=Container::create(['name' => request('name')]);
         if ($container) {
-            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El recipiente ha sido registrado exitosamente.']);
+            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El compartimento ha sido registrado exitosamente.']);
         } else {
             return redirect()->route('containers.create')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.'])->withInputs();
         }
@@ -65,7 +65,7 @@ class ContainerController extends Controller
     public function update(ContainerUpdateRequest $request, Container $contain) {
         $contain->fill(['name' => request('name')])->save();
         if ($contain) {
-            return redirect()->route('containers.edit', ['container' => $contain->slug])->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido editado exitosamente.']);
+            return redirect()->route('containers.edit', ['container' => $contain->slug])->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El compartimento ha sido editado exitosamente.']);
         } else {
             return redirect()->route('containers.edit', ['container' => $contain->slug])->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
         }
@@ -84,7 +84,7 @@ class ContainerController extends Controller
 
         $container->delete();
         if ($container) {
-            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'El recipiente ha sido eliminado exitosamente.']);
+            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'El compartimento ha sido eliminado exitosamente.']);
         } else {
             return redirect()->route('containers.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Eliminación fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
         }
@@ -93,7 +93,7 @@ class ContainerController extends Controller
     public function deactivate(Request $request, Container $container) {
         $container->fill(['state' => "0"])->save();
         if ($container) {
-            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido desactivado exitosamente.']);
+            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El compartimento ha sido desactivado exitosamente.']);
         } else {
             return redirect()->route('containers.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
         }
@@ -102,7 +102,7 @@ class ContainerController extends Controller
     public function activate(Request $request, Container $container) {
         $container->fill(['state' => "1"])->save();
         if ($container) {
-            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El recipiente ha sido activado exitosamente.']);
+            return redirect()->route('containers.index')->with(['alert' => 'sweet', 'type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El compartimento ha sido activado exitosamente.']);
         } else {
             return redirect()->route('containers.index')->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
         }

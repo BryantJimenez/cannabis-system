@@ -62,12 +62,9 @@
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
-									<label class="col-form-label">Recipiente<b class="text-danger">*</b></label>
+									<label class="col-form-label">Compartimento<b class="text-danger">*</b></label>
 									<select class="form-control" name="container_id" required id="selectContainers">
 										<option value="">Seleccione</option>
-										{{-- @foreach($containers as $container)
-										<option value="{{ $container->slug }}" @if(old('container_id')==$container->slug) selected @endif>{{ $container->name.' (Uso: '.$container->use.'/'.$setting->qty_plants.')' }}</option>
-										@endforeach --}}
 									</select>
 								</div>
 

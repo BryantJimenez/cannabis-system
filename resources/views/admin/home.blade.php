@@ -62,7 +62,7 @@
 	<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 layout-spacing"> 
 		<div class="card bg-secondary">
 			<div class="card-body">
-				<h5 class="card-text text-white text-center font-weight-bold">Recipientes</h5>
+				<h5 class="card-text text-white text-center font-weight-bold">Compartimentos</h5>
 				<h2 class="text-white text-center font-weight-bold">{{ $containers }}</h2>
 			</div>
 		</div>

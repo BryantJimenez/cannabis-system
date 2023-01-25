@@ -12,6 +12,6 @@ class ContainersSeeder extends Seeder
      */
     public function run()
     {
-        factory(Container::class, 700)->create(['state' => '1']);
+        factory(Container::class, 20)->create(['state' => '1']);
     }
 }

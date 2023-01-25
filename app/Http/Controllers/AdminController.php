@@ -12,7 +12,7 @@ use App\Models\Harvest;
 use App\Models\Container;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Hash;
 use Auth;
 
 class AdminController extends Controller
@@ -119,9 +119,12 @@ class AdminController extends Controller
         $container=Container::where('slug', request('container'))->first();
 
         if (!is_null($setting) && !is_null($container)) {
-            $stage=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['container_id', $container->id]])->first();
-            if (!is_null($stage)) {
-            	return response()->json(['state' => true, 'setting' => ['qty_plants' => $setting->qty_plants], 'data' => ['plants' => $stage['plants'], 'flower' => $stage->flower, 'waste' => $stage->waste], 'count_plants' => $stage['plants']->count()], 200);
+            $cured=Stage::with(['plants'])->where([['type', '1'], ['state', '0'], ['container_id', $container->id]])->get();
+            $trimmed=Stage::with(['plants'])->where([['type', '2'], ['state', '0'], ['container_id', $container->id]])->first();
+            if ($cured->count()>0 && is_null($trimmed)) {
+            	return response()->json(['state' => true, 'setting' => ['qty_plants' => $setting->qty_plants], 'count_plants' => $cured->pluck('plants')->collapse()->count()], 200);
+            } elseif ($cured->count()==0 && is_null($trimmed)) {
+                return response()->json(['state' => true, 'setting' => ['qty_plants' => $setting->qty_plants], 'count_plants' => 0], 200);
             }
         }
 

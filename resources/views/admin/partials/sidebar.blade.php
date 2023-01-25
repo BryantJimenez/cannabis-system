@@ -84,8 +84,8 @@
             @endif
 
             @if(auth()->user()->can('settings.edit') || auth()->user()->can('harvests.index') || auth()->user()->can('strains.index') || auth()->user()->can('rooms.index') || auth()->user()->can('containers.index'))
-            <li class="menu {{ active(['admin/ajustes', 'admin/cosechas', 'admin/cepas', 'admin/cuartos', 'admin/recipientes'], 0) }}">
-                <a href="#cogs" data-toggle="collapse" aria-expanded="{{ menu_expanded(['admin/ajustes', 'admin/cosechas', 'admin/cepas', 'admin/cuartos', 'admin/recipientes'], 0) }}" class="dropdown-toggle">
+            <li class="menu {{ active(['admin/ajustes', 'admin/cosechas', 'admin/cepas', 'admin/cuartos', 'admin/compartimentos'], 0) }}">
+                <a href="#cogs" data-toggle="collapse" aria-expanded="{{ menu_expanded(['admin/ajustes', 'admin/cosechas', 'admin/cepas', 'admin/cuartos', 'admin/compartimentos'], 0) }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                         <span> Configuraciones</span>
@@ -94,7 +94,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ submenu(['admin/ajustes', 'admin/cosechas', 'admin/cepas', 'admin/cuartos', 'admin/recipientes'], 0) }}" id="cogs" data-parent="#accordionExample">
+                <ul class="collapse submenu list-unstyled {{ submenu(['admin/ajustes', 'admin/cosechas', 'admin/cepas', 'admin/cuartos', 'admin/compartimentos'], 0) }}" id="cogs" data-parent="#accordionExample">
                     @can('settings.edit')
                     <li {{ submenu('admin/ajustes') }}>
                         <a href="{{ route('settings.edit') }}"> Generales</a>
@@ -116,8 +116,8 @@
                     </li>
                     @endcan
                     @can('containers.index')     
-                    <li {{ submenu('admin/recipientes') }}>
-                        <a href="{{ route('containers.index') }}"> Recipientes</a>
+                    <li {{ submenu('admin/compartimentos') }}>
+                        <a href="{{ route('containers.index') }}"> Compartimentos</a>
                     </li>
                     @endcan
                 </ul>

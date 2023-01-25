@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Lista de Recipientes')
+@section('title', 'Lista de Compatimentos')
 
 @section('links')
 <link rel="stylesheet" type="text/css" href="{{ asset('/admins/vendor/table/datatable/datatables.css') }}">
@@ -21,7 +21,7 @@
 			<div class="widget-header">
 				<div class="row">
 					<div class="col-xl-12 col-md-12 col-sm-12 col-12">
-						<h4>Lista de Recipientes</h4>
+						<h4>Lista de Compatimentos</h4>
 					</div>                 
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres desactivar este recipiente?</h5>
+				<h5 class="modal-title">¿Estás seguro de que quieres desactivar este compartimento?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -120,7 +120,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres activar este recipiente?</h5>
+				<h5 class="modal-title">¿Estás seguro de que quieres activar este compartimento?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -143,7 +143,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este recipiente?</h5>
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este compartimento?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
