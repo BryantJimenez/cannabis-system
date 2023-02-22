@@ -35,17 +35,18 @@
 							<div class="row">
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Foto (Opcional)</label>
-									<input type="file" name="photo" accept="image/*" class="dropify" data-height="125" data-max-file-size="20M" data-allowed-file-extensions="jpg png jpeg web3" />
+									<input type="file" name="photo" accept="image/*" class="dropify custom-error" data-height="125" data-max-file-size="20M" data-allowed-file-extensions="jpg png jpeg web3" />
+									<div class="custom-error-photo"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<div class="row">
-										<div class="form-group col-lg-12 col-md-12 col-12">
+										<div class="form-group col-12">
 											<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
 											<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name') }}">
 										</div>
 
-										<div class="form-group col-lg-12 col-md-12 col-12">
+										<div class="form-group col-12">
 											<label class="col-form-label">Apellido<b class="text-danger">*</b></label>
 											<input class="form-control @error('lastname') is-invalid @enderror" type="text" name="lastname" required placeholder="Introduzca un apellido" value="{{ old('lastname') }}">
 										</div>
@@ -81,10 +82,11 @@
 									<label class="col-form-label">Confirmar Contraseña<b class="text-danger">*</b></label>
 									<input class="form-control" type="password" name="password_confirmation" required placeholder="********">
 								</div>
+
 								<div class="form-group col-12">
 									<div class="btn-group" role="group">
-										<button type="submit" class="btn btn-primary" action="employee">Guardar</button>
-										<a href="{{ route('employees.index') }}" class="btn btn-secondary">Volver</a>
+										<button type="submit" class="btn btn-primary mr-0" action="employee">Guardar</button>
+										<a href="{{ route('employees.index') }}" class="btn btn-secondary mr-0">Volver</a>
 									</div>
 								</div> 
 							</div>

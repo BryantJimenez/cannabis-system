@@ -4,8 +4,8 @@
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
-                <img src="{{ image_exist('/admins/img/users/', Auth::user()->photo, true) }}" width="90" height="90" title="Foto de Perfil" alt="{{ Auth::user()->name." ".Auth::user()->lastname }}">
-                <h6 class="">{{ Auth::user()->name." ".Auth::user()->lastname }}</h6>
+                <img src="{{ Auth::user()->photo_url }}" width="90" height="90" title="Foto de Perfil" alt="{{ Auth::user()->fullname }}">
+                <h6 class="">{{ Auth::user()->fullname }}</h6>
                 <p class="">{!! roleUser(Auth::user()) !!}</p>
             </div>
         </div>

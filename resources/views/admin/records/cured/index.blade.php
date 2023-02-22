@@ -54,7 +54,7 @@
 										<td>{{ $loop->iteration }}</td>
 										@if(!Auth::user()->hasRole(['Trabajador']))
 										<td class="d-flex align-items-center">
-											<img src="{{ image_exist('/admins/img/users/', $stage['user']->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $stage['user']->name." ".$stage['user']->lastname }}" title="{{ $stage['user']->name." ".$stage['user']->lastname }}"> {{ $stage['user']->name." ".$stage['user']->lastname }}
+											<img src="{{ $stage['user']->photo_url }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $stage['user']->fullname }}" title="{{ $stage['user']->fullname }}"> {{ $stage['user']->fullname }}
 										</td>
 										@endif
 										<td>{{ $stage['strain']->name }}</td>
@@ -71,7 +71,7 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('records.cured.show')
-												<a href="{{ route('records.cured.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Ver Detalles"><i class="fa fa-eye"></i></a>
+												<a href="{{ route('records.cured.show', ['stage' => $stage->id]) }}" class="btn btn-primary btn-sm bs-tooltip mr-0" title="Ver Detalles"><i class="fa fa-eye"></i></a>
 												@endcan
 											</div>
 										</td>

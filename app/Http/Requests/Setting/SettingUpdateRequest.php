@@ -24,7 +24,7 @@ class SettingUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'qty_plants' => 'required|integer|min:1|max:6'
+            'qty_plants' => 'required|integer|min:1|max:30'
         ];
     }
 }

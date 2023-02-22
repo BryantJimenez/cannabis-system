@@ -63,6 +63,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the photo url.
+     *
+     * @return string
+     */
+    public function getPhotoUrlAttribute()
+    {
+        return image_exist('/admins/img/users/', $this->photo, true);
+    }
+
+    /**
      * Get the state.
      *
      * @return string

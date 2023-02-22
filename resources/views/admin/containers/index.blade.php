@@ -31,7 +31,7 @@
 					<div class="col-12">
 						@can('containers.create')
 						<div class="text-right">
-							<a href="{{ route('containers.create') }}" class="btn btn-primary">Agregar</a>
+							<a href="{{ route('containers.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 						</div>
 						@endcan
 
@@ -59,20 +59,20 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('containers.edit')
-												<a href="{{ route('containers.edit', ['container' => $container->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
+												<a href="{{ route('containers.edit', ['container' => $container->slug]) }}" class="btn btn-info btn-sm bs-tooltip mr-0" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
 												@if($container->state=='Activo')
 												@can('containers.deactive')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Desactivar" onclick="deactiveContainer('{{ $container->slug }}')"><i class="fa fa-power-off"></i></button>
+												<button type="button" class="btn btn-warning btn-sm bs-tooltip mr-0" title="Desactivar" onclick="deactiveContainer('{{ $container->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan
 												@else
 												@can('containers.active')
-												<button type="button" class="btn btn-success btn-sm bs-tooltip" title="Activar" onclick="activeContainer('{{ $container->slug }}')"><i class="fa fa-check"></i></button>
+												<button type="button" class="btn btn-success btn-sm bs-tooltip mr-0" title="Activar" onclick="activeContainer('{{ $container->slug }}')"><i class="fa fa-check"></i></button>
 												@endcan
 												@endif
 												@can('containers.delete')
 												@if($container->use==0)
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteContainer('{{ $container->slug }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteContainer('{{ $container->slug }}')"><i class="fa fa-trash"></i></button>
 												@endif
 												@endcan
 											</div>
@@ -93,72 +93,15 @@
 </div>
 
 @can('containers.deactive')
-<div class="modal fade" id="deactiveContainer" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres desactivar este compartimento?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeactiveContainer">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Desactivar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deactiveContainer" form="formDeactiveContainer" method="PUT" title="¿Estás seguro de que quieres desactivar este compartimento?" close="Cancelar" button="Desactivar"></x-modal-simple>
 @endcan
 
 @can('containers.active')
-<div class="modal fade" id="activeContainer" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres activar este compartimento?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formActiveContainer">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Activar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="activeContainer" form="formActiveContainer" method="PUT" title="¿Estás seguro de que quieres activar este compartimento?" close="Cancelar" button="Activar"></x-modal-simple>
 @endcan
 
 @can('containers.delete')
-<div class="modal fade" id="deleteContainer" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este compartimento?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeleteContainer">
-					@csrf
-					@method('DELETE')
-					<button type="submit" class="btn btn-primary">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deleteContainer" form="formDeleteContainer" method="DELETE" title="¿Estás seguro de que quieres eliminar este compartimento?" close="Cancelar" button="Eliminar"></x-modal-simple>
 @endcan
 
 @endsection

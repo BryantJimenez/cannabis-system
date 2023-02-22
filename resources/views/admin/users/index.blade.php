@@ -31,7 +31,7 @@
 					<div class="col-12">
 						@can('users.create')
 						<div class="text-right">
-							<a href="{{ route('users.create') }}" class="btn btn-primary">Agregar</a>
+							<a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 						</div>
 						@endcan
 
@@ -55,7 +55,7 @@
 									<tr>
 										<td>{{ $loop->iteration }}</td>
 										<td class="d-flex align-items-center">
-											<img src="{{ image_exist('/admins/img/users/', $user->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $user->name." ".$user->lastname }}" title="{{ $user->name." ".$user->lastname }}"> {{ $user->name." ".$user->lastname }}
+											<img src="{{ $user->photo_url }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $user->fullname }}" title="{{ $user->fullname }}"> {{ $user->fullname }}
 										</td>
 										<td>{{ $user->email }}</td>
 										<td>{{ $user->phone }}</td>
@@ -65,26 +65,26 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('users.show')
-												<a href="{{ route('users.show', ['user' => $user->slug]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Perfil"><i class="fa fa-user"></i></a>
+												<a href="{{ route('users.show', ['user' => $user->slug]) }}" class="btn btn-primary btn-sm bs-tooltip mr-0" title="Perfil"><i class="fa fa-user"></i></a>
 												@endcan
 												@can('users.edit')
-												<a href="{{ route('users.edit', ['user' => $user->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
+												<a href="{{ route('users.edit', ['user' => $user->slug]) }}" class="btn btn-info btn-sm bs-tooltip mr-0" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
 												@if(Auth::user()->id!=$user->id)
 												@if($user->state=='Activo')
 												@can('users.deactive')
-												<button type="button" class="btn btn-warning btn-sm bs-tooltip" title="Desactivar" onclick="deactiveUser('{{ $user->slug }}')"><i class="fa fa-power-off"></i></button>
+												<button type="button" class="btn btn-warning btn-sm bs-tooltip mr-0" title="Desactivar" onclick="deactiveUser('{{ $user->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan
 												@else
 												@can('users.active')
-												<button type="button" class="btn btn-success btn-sm bs-tooltip" title="Activar" onclick="activeUser('{{ $user->slug }}')"><i class="fa fa-check"></i></button>
+												<button type="button" class="btn btn-success btn-sm bs-tooltip mr-0" title="Activar" onclick="activeUser('{{ $user->slug }}')"><i class="fa fa-check"></i></button>
 												@endcan
 												@endif
-												@can('users.delete')
 												@if(!$user->hasRole('Super Admin') || ($user->hasRole('Super Admin') && Auth::user()->hasRole('Super Admin')))
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteUser('{{ $user->slug }}')"><i class="fa fa-trash"></i></button>
-												@endif
+												@can('users.delete')
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteUser('{{ $user->slug }}')"><i class="fa fa-trash"></i></button>
 												@endcan
+												@endif
 												@endif
 											</div>
 										</td>
@@ -104,72 +104,15 @@
 </div>
 
 @can('users.deactive')
-<div class="modal fade" id="deactiveUser" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres desactivar este usuario?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeactiveUser">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Desactivar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deactiveUser" form="formDeactiveUser" method="PUT" title="¿Estás seguro de que quieres desactivar este usuario?" close="Cancelar" button="Desactivar"></x-modal-simple>
 @endcan
 
 @can('users.active')
-<div class="modal fade" id="activeUser" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres activar este usuario?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formActiveUser">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Activar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="activeUser" form="formActiveUser" method="PUT" title="¿Estás seguro de que quieres activar este usuario?" close="Cancelar" button="Activar"></x-modal-simple>
 @endcan
 
 @can('users.delete')
-<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este usuario?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeleteUser">
-					@csrf
-					@method('DELETE')
-					<button type="submit" class="btn btn-primary">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deleteUser" form="formDeleteUser" method="DELETE" title="¿Estás seguro de que quieres eliminar este usuario?" close="Cancelar" button="Eliminar"></x-modal-simple>
 @endcan
 
 @endsection

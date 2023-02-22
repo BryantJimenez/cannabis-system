@@ -31,7 +31,7 @@
 					<div class="col-12">
 						@can('employees.create')
 						<div class="text-right">
-							<a href="{{ route('employees.create') }}" class="btn btn-primary">Agregar</a>
+							<a href="{{ route('employees.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 						</div>
 						@endcan
 
@@ -56,7 +56,7 @@
 									<tr>
 										<td>{{ $loop->iteration }}</td>
 										<td class="d-flex align-items-center">
-											<img src="{{ image_exist('/admins/img/users/', $employee->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $employee->name." ".$employee->lastname }}" title="{{ $employee->name." ".$employee->lastname }}"> {{ $employee->name." ".$employee->lastname }}
+											<img src="{{ $employee->photo_url }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $employee->fullname }}" title="{{ $employee->fullname }}"> {{ $employee->fullname }}
 										</td>
 										<td>{{ $employee->email }}</td>
 										<td>{{ $employee->phone }}</td>
@@ -67,22 +67,22 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('employees.show')
-												<a href="{{ route('employees.show', ['employee' => $employee->slug]) }}" class="btn btn-primary btn-sm bs-tooltip" title="Perfil"><i class="fa fa-user"></i></a>
+												<a href="{{ route('employees.show', ['employee' => $employee->slug]) }}" class="btn btn-primary btn-sm bs-tooltip mr-0" title="Perfil"><i class="fa fa-user"></i></a>
 												@endcan
 												@can('employees.edit')
-												<a href="{{ route('employees.edit', ['employee' => $employee->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
+												<a href="{{ route('employees.edit', ['employee' => $employee->slug]) }}" class="btn btn-info btn-sm bs-tooltip mr-0" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
 												@if($employee->state=='Activo')
 												@can('employees.deactive')
-												<button type="button" class="btn btn-warning btn-sm bs-tooltip" title="Desactivar" onclick="deactiveEmployee('{{ $employee->slug }}')"><i class="fa fa-power-off"></i></button>
+												<button type="button" class="btn btn-warning btn-sm bs-tooltip mr-0" title="Desactivar" onclick="deactiveEmployee('{{ $employee->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan
 												@else
 												@can('employees.active')
-												<button type="button" class="btn btn-success btn-sm bs-tooltip" title="Activar" onclick="activeEmployee('{{ $employee->slug }}')"><i class="fa fa-check"></i></button>
+												<button type="button" class="btn btn-success btn-sm bs-tooltip mr-0" title="Activar" onclick="activeEmployee('{{ $employee->slug }}')"><i class="fa fa-check"></i></button>
 												@endcan
 												@endif
 												@can('employees.delete')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteEmployee('{{ $employee->slug }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteEmployee('{{ $employee->slug }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>
@@ -102,72 +102,15 @@
 </div>
 
 @can('employees.deactive')
-<div class="modal fade" id="deactiveEmployee" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres desactivar este trabajador?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeactiveEmployee">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Desactivar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deactiveEmployee" form="formDeactiveEmployee" method="PUT" title="¿Estás seguro de que quieres desactivar este trabajador?" close="Cancelar" button="Desactivar"></x-modal-simple>
 @endcan
 
 @can('employees.active')
-<div class="modal fade" id="activeEmployee" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres activar este trabajador?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formActiveEmployee">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Activar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="activeEmployee" form="formActiveEmployee" method="PUT" title="¿Estás seguro de que quieres activar este trabajador?" close="Cancelar" button="Activar"></x-modal-simple>
 @endcan
 
 @can('employees.delete')
-<div class="modal fade" id="deleteEmployee" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este trabajador?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeleteEmployee">
-					@csrf
-					@method('DELETE')
-					<button type="submit" class="btn btn-primary">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deleteEmployee" form="formDeleteEmployee" method="DELETE" title="¿Estás seguro de que quieres eliminar este trabajador?" close="Cancelar" button="Eliminar"></x-modal-simple>
 @endcan
 
 @endsection

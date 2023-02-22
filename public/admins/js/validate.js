@@ -147,6 +147,10 @@ $(document).ready(function(){
 		$("#formProfile").validate({
 			rules:
 			{
+				photo: {
+					required: false
+				},
+
 				name: {
 					required: true,
 					minlength: 2,
@@ -171,6 +175,13 @@ $(document).ready(function(){
 					maxlength: 40
 				}
 			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
+				}
+			},
 			submitHandler: function(form) {
 				$("button[action='profile']").attr('disabled', true);
 				form.submit();
@@ -183,6 +194,10 @@ $(document).ready(function(){
 		$("#formUser").validate({
 			rules:
 			{
+				photo: {
+					required: false
+				},
+
 				name: {
 					required: true,
 					minlength: 2,
@@ -240,6 +255,13 @@ $(document).ready(function(){
 					required: 'Seleccione una opción.'
 				}
 			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
+				}
+			},
 			submitHandler: function(form) {
 				$("button[action='user']").attr('disabled', true);
 				form.submit();
@@ -252,6 +274,10 @@ $(document).ready(function(){
 		$("#formEmployee").validate({
 			rules:
 			{
+				photo: {
+					required: false
+				},
+
 				name: {
 					required: true,
 					minlength: 2,
@@ -320,6 +346,13 @@ $(document).ready(function(){
 
 				state: {
 					required: "Seleccione una opción."
+				}
+			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
 				}
 			},
 			submitHandler: function(form) {
@@ -507,6 +540,13 @@ $(document).ready(function(){
 					remote: "Esta planta esta duplicada."
 				}
 			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
+				}
+			},
 			submitHandler: function(form) {
 				var duplicate=false;
 				$('input[name^="plants"]').each(function(index, el) {
@@ -636,6 +676,13 @@ $(document).ready(function(){
 					required: "Seleccione una opción."
 				}
 			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
+				}
+			},
 			submitHandler: function(form) {
 				$("button[action='stage']").attr('disabled', true);
 				form.submit();
@@ -687,7 +734,14 @@ $(document).ready(function(){
 				qty_plants: {
 					required: true,
 					min: 1,
-					max: 6
+					max: 30
+				}
+			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
 				}
 			},
 			submitHandler: function(form) {
@@ -722,6 +776,13 @@ $(document).ready(function(){
 			{
 				harvest_id: {
 					required: "Seleccione una opción."
+				}
+			},
+			errorPlacement: function(error, element) {
+				if (element.hasClass('custom-error')) {
+					error.appendTo('.custom-error-'+$(element).attr('name'));
+				} else {
+					error.insertAfter(element);
 				}
 			},
 			submitHandler: function(form) {

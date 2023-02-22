@@ -31,7 +31,7 @@
 					<div class="col-12">
 						@can('stages.trimmed.create')
 						<div class="text-right">
-							<a href="{{ route('stages.trimmed.create') }}" class="btn btn-primary">Agregar</a>
+							<a href="{{ route('stages.trimmed.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 						</div>
 						@endcan
 
@@ -59,7 +59,7 @@
 										<td>{{ $loop->iteration }}</td>
 										@if(!Auth::user()->hasRole(['Trabajador']))
 										<td class="d-flex align-items-center">
-											<img src="{{ image_exist('/admins/img/users/', $stage['user']->photo, true) }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $stage['user']->name." ".$stage['user']->lastname }}" title="{{ $stage['user']->name." ".$stage['user']->lastname }}"> {{ $stage['user']->name." ".$stage['user']->lastname }}
+											<img src="{{ $stage['user']->photo_url }}" class="rounded-circle mr-2" width="45" height="45" alt="{{ $stage['user']->fullname }}" title="{{ $stage['user']->fullname }}"> {{ $stage['user']->fullname }}
 										</td>
 										@endif
 										<td>{{ $stage['strain']->name }}</td>
@@ -99,71 +99,35 @@
 </div>
 
 @can('stages.trimmed.delete')
-<div class="modal fade" id="deleteStageTrimmed" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<form action="#" method="POST" class="modal-content" id="formDeleteStageTrimmed">
-			@csrf
-			@method('DELETE')
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este trimmiado?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-12">
-						@include('admin.partials.errors')
-						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
-					</div>
+<x-modal-form modal="deleteStageTrimmed" size="modal-lg" form="formDeleteStageTrimmed" method="DELETE" title="¿Estás seguro de que quieres eliminar este trimmiado?" validate="stage" close="Cancelar" button="Eliminar">
+	<div class="row">
+		<div class="col-12">
+			@include('admin.partials.errors')
+			<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
+		</div>
 
-					<div class="form-group col-12">
-						<label class="col-form-label">Nota<b class="text-danger">*</b></label>
-						<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<button type="submit" class="btn btn-primary" action="stage">Eliminar</button>
-			</div>
-		</form>
+		<div class="form-group col-12">
+			<label class="col-form-label">Nota<b class="text-danger">*</b></label>
+			<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
+		</div>
 	</div>
-</div>
+</x-modal-form>
 @endcan
 
 @can('stages.trimmed.empty')
-<div class="modal fade" id="emptyContainer" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<form action="#" method="POST" class="modal-content" id="formEmptyContainer">
-			@csrf
-			@method('PUT')
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres vaciar este compartimento?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-12">
-						@include('admin.partials.errors')
-						<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
-					</div>
+<x-modal-form modal="emptyContainer" size="modal-lg" form="formEmptyContainer" method="PUT" title="¿Estás seguro de que quieres vaciar este compartimento?" validate="stage" close="Cancelar" button="Vaciar">
+	<div class="row">
+		<div class="col-12">
+			@include('admin.partials.errors')
+			<p>Campos obligatorios (<b class="text-danger">*</b>)</p>
+		</div>
 
-					<div class="form-group col-12">
-						<label class="col-form-label">Nota<b class="text-danger">*</b></label>
-						<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<button type="submit" class="btn btn-primary" action="stage">Vaciar</button>
-			</div>
-		</form>
+		<div class="form-group col-12">
+			<label class="col-form-label">Nota<b class="text-danger">*</b></label>
+			<textarea class="form-control @error('note') is-invalid @enderror" name="note" required placeholder="Introduzca una nota" rows="5">{{ old('note') }}</textarea>
+		</div>
 	</div>
-</div>
+</x-modal-form>
 @endcan
 
 @endsection

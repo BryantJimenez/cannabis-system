@@ -100,7 +100,7 @@ class StatisticController extends Controller
         }])->where('slug', $strain)->firstOrFail();
 
         if (is_null(request('start')) || is_null(request('end')) || (!is_null(request('start')) && !request('end')) && request('end')<request('start')) {
-            return redirect()->back()->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Error', 'msg' => 'Selecciona un rango de fechas valido.'])->withInputs();
+            return redirect()->back()->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Error', 'msg' => 'Selecciona un rango de fechas valido.'])->withInput();
         }
 
         $between=[date('Y-m-d H:i:s', strtotime(request('start').' 00:00:00')), date('Y-m-d H:i:s', strtotime(request('end').' 23:59:59'))];
@@ -131,7 +131,7 @@ class StatisticController extends Controller
         }])->where('slug', $strain)->firstOrFail();
 
         if (is_null(request('start')) || is_null(request('end')) || (!is_null(request('start')) && !request('end')) && request('end')<request('start')) {
-            return redirect()->back()->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Error', 'msg' => 'Selecciona un rango de fechas valido.'])->withInputs();
+            return redirect()->back()->with(['alert' => 'lobibox', 'type' => 'error', 'title' => 'Error', 'msg' => 'Selecciona un rango de fechas valido.'])->withInput();
         }
 
         $between=[date('Y-m-d H:i:s', strtotime(request('start').' 00:00:00')), date('Y-m-d H:i:s', strtotime(request('end').' 23:59:59'))];

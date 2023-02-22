@@ -316,8 +316,8 @@ $(document).ready(function() {
       step: 0.01,
       decimals: 2,
       postfix: 'g',
-      buttondown_class: 'btn btn-primary pt-2 pb-3',
-      buttonup_class: 'btn btn-primary pt-2 pb-3',
+      buttondown_class: 'btn btn-primary rounded-0 h-100 mr-0',
+      buttonup_class: 'btn btn-primary rounded-0 h-100 mr-0',
       postfix_extraclass: "d-flex align-items-center bg-light-gray px-2"
     });
   }
@@ -325,9 +325,9 @@ $(document).ready(function() {
   if ($('.qty-plants').length) {
     $(".qty-plants").TouchSpin({
       min: 1,
-      max: 6,
-      buttondown_class: 'btn btn-primary pt-2 pb-3',
-      buttonup_class: 'btn btn-primary pt-2 pb-3'
+      max: 100,
+      buttondown_class: 'btn btn-primary rounded-0 h-100 mr-0',
+      buttonup_class: 'btn btn-primary rounded-0 h-100 mr-0'
     });
   }
 });

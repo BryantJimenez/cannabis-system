@@ -37,11 +37,12 @@
 
 								<div class="form-group col-lg-4 col-md-4 col-12">
 									<label class="col-form-label">Cosechas<b class="text-danger">*</b></label>
-									<select class="form-control selectpicker" name="harvest_id" required data-size="10" data-live-search="true" title="Seleccione">
+									<select class="form-control selectpicker custom-error" name="harvest_id" required data-size="10" data-live-search="true" title="Seleccione">
 										@foreach($harvests as $harvesting)
 										<option value="{{ $harvesting->slug }}" @if(request('harvest_id')==$harvesting->slug) selected @endif>{{ $harvesting->name }}</option>
 										@endforeach
 									</select>
+									<div class="custom-error-harvest_id"></div>
 								</div>
 
 								<div class="form-group col-lg-4 col-md-4 col-12">
@@ -102,7 +103,7 @@
 													@foreach($employees as $employee)
 													<tr>
 														<td>{{ $loop->iteration }}</td>
-														<td>{{ $employee->name.' '.$employee->lastname }}</td>
+														<td>{{ $employee->fullname }}</td>
 														<td>
 															{{ $employee['stages']->where('type', 'Curado')->map(function ($stage) {
 																$stage->date=$stage->created_at->format('Y-m-d');
@@ -215,7 +216,7 @@
 													@foreach($employees as $employee)
 													<tr>
 														<td>{{ $loop->iteration }}</td>
-														<td>{{ $employee->name.' '.$employee->lastname }}</td>
+														<td>{{ $employee->fullname }}</td>
 														<td>
 															{{ $employee['stages']->where('type', 'Trimmiado')->map(function ($stage) {
 																$stage->date=$stage->created_at->format('Y-m-d');

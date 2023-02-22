@@ -74,42 +74,50 @@
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Flores<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('flower') is-invalid @enderror" type="text" name="flower" required placeholder="Introduzca el peso de la flor" value="{{ old('flower') }}" id="flower">
+									<input class="form-control min-decimal-grams custom-error @error('flower') is-invalid @enderror" type="text" name="flower" required placeholder="Introduzca el peso de la flor" value="{{ old('flower') }}" id="flower">
+									<div class="custom-error-flower"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Flores Confirmación<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('flower_confirmation') is-invalid @enderror" type="text" name="flower_confirmation" required placeholder="Introduzca la confirmación del peso de la flor" value="{{ old('flower_confirmation') }}">
+									<input class="form-control min-decimal-grams custom-error @error('flower_confirmation') is-invalid @enderror" type="text" name="flower_confirmation" required placeholder="Introduzca la confirmación del peso de la flor" value="{{ old('flower_confirmation') }}">
+									<div class="custom-error-flower_confirmation"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Larf<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('larf') is-invalid @enderror" type="text" name="larf" required placeholder="Introduzca el peso del larf" value="{{ old('larf') }}" id="larf">
+									<input class="form-control min-decimal-grams custom-error @error('larf') is-invalid @enderror" type="text" name="larf" required placeholder="Introduzca el peso del larf" value="{{ old('larf') }}" id="larf">
+									<div class="custom-error-larf"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Larf Confirmación<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('larf_confirmation') is-invalid @enderror" type="text" name="larf_confirmation" required placeholder="Introduzca la confirmación del peso del larf" value="{{ old('larf_confirmation') }}">
+									<input class="form-control min-decimal-grams custom-error @error('larf_confirmation') is-invalid @enderror" type="text" name="larf_confirmation" required placeholder="Introduzca la confirmación del peso del larf" value="{{ old('larf_confirmation') }}">
+									<div class="custom-error-larf_confirmation"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Trim<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('trim') is-invalid @enderror" type="text" name="trim" required placeholder="Introduzca el peso del trim" value="{{ old('trim') }}" id="trim">
+									<input class="form-control min-decimal-grams custom-error @error('trim') is-invalid @enderror" type="text" name="trim" required placeholder="Introduzca el peso del trim" value="{{ old('trim') }}" id="trim">
+									<div class="custom-error-trim"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Trim Confirmación<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('trim_confirmation') is-invalid @enderror" type="text" name="trim_confirmation" required placeholder="Introduzca la confirmación del peso del trim" value="{{ old('trim_confirmation') }}">
+									<input class="form-control min-decimal-grams custom-error @error('trim_confirmation') is-invalid @enderror" type="text" name="trim_confirmation" required placeholder="Introduzca la confirmación del peso del trim" value="{{ old('trim_confirmation') }}">
+									<div class="custom-error-trim_confirmation"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Desperdicios<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('waste') is-invalid @enderror" type="text" name="waste" required placeholder="Introduzca el peso de los desperdicios" value="{{ old('waste') }}" id="waste">
+									<input class="form-control min-decimal-grams custom-error @error('waste') is-invalid @enderror" type="text" name="waste" required placeholder="Introduzca el peso de los desperdicios" value="{{ old('waste') }}" id="waste">
+									<div class="custom-error-waste"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Desperdicios Confirmación<b class="text-danger">*</b></label>
-									<input class="form-control min-decimal-grams @error('waste_confirmation') is-invalid @enderror" type="text" name="waste_confirmation" required placeholder="Introduzca la confirmación del peso de los desperdicios" value="{{ old('waste_confirmation') }}">
+									<input class="form-control min-decimal-grams custom-error @error('waste_confirmation') is-invalid @enderror" type="text" name="waste_confirmation" required placeholder="Introduzca la confirmación del peso de los desperdicios" value="{{ old('waste_confirmation') }}">
+									<div class="custom-error-waste_confirmation"></div>
 								</div>
 
 								<div class="form-group col-12">

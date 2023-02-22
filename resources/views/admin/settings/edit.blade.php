@@ -37,13 +37,14 @@
 							<div class="row">
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Cantidad de Plantas x Compartimento<b class="text-danger">*</b></label>
-									<input class="form-control qty-plants @error('qty_plants') is-invalid @enderror" type="text" name="qty_plants" required placeholder="Introduzca la cantidad de plantas por recipiente" value="{{ $setting->qty_plants }}">
+									<input class="form-control qty-plants custom-error @error('qty_plants') is-invalid @enderror" type="text" name="qty_plants" required placeholder="Introduzca la cantidad de plantas por recipiente" value="{{ old('qty_plants', $setting->qty_plants ?? 30) }}">
+									<div class="custom-error-qty_plants"></div>
 								</div>
 								
 								<div class="form-group col-12">
 									<div class="btn-group" role="group">
-										<button type="submit" class="btn btn-primary" action="setting">Actualizar</button>
-										<a href="{{ route('admin') }}" class="btn btn-secondary">Volver</a>
+										<button type="submit" class="btn btn-primary mr-0" action="setting">Actualizar</button>
+										<a href="{{ route('admin') }}" class="btn btn-secondary mr-0">Volver</a>
 									</div>
 								</div> 
 							</div>

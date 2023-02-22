@@ -53,13 +53,13 @@
 										<td>{!! logAction($log->action) !!}</td>
 										<td>{{ $log->description }}</td>
 										<td>{{ $log->note }}</td>
-										<td>{{ $log['user']->name.' '.$log['user']->lastname }}</td>
+										<td>{{ $log['user']->fullname }}</td>
 										<td>{{ $log->created_at->format('d-m-Y H:i A') }}</td>
 										@if(auth()->user()->can('logs.delete'))
 										<td>
 											<div class="btn-group" role="group">
 												@can('logs.delete')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteLog('{{ $log->id }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteLog('{{ $log->id }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>
@@ -79,26 +79,7 @@
 </div>
 
 @can('logs.delete')
-<div class="modal fade" id="deleteLog" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este registro de actividad?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeleteLog">
-					@csrf
-					@method('DELETE')
-					<button type="submit" class="btn btn-primary">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deleteLog" form="formDeleteLog" method="DELETE" title="¿Estás seguro de que quieres eliminar este registro de actividad?" close="Cancelar" button="Eliminar"></x-modal-simple>
 @endcan
 
 @endsection

@@ -31,7 +31,7 @@
 					<div class="col-12">
 						@can('rooms.create')
 						<div class="text-right">
-							<a href="{{ route('rooms.create') }}" class="btn btn-primary">Agregar</a>
+							<a href="{{ route('rooms.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 						</div>
 						@endcan
 
@@ -57,19 +57,19 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('rooms.edit')
-												<a href="{{ route('rooms.edit', ['room' => $room->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
+												<a href="{{ route('rooms.edit', ['room' => $room->slug]) }}" class="btn btn-info btn-sm bs-tooltip mr-0" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
 												@if($room->state=='Activo')
 												@can('rooms.deactive')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Desactivar" onclick="deactiveRoom('{{ $room->slug }}')"><i class="fa fa-power-off"></i></button>
+												<button type="button" class="btn btn-warning btn-sm bs-tooltip mr-0" title="Desactivar" onclick="deactiveRoom('{{ $room->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan
 												@else
 												@can('rooms.active')
-												<button type="button" class="btn btn-success btn-sm bs-tooltip" title="Activar" onclick="activeRoom('{{ $room->slug }}')"><i class="fa fa-check"></i></button>
+												<button type="button" class="btn btn-success btn-sm bs-tooltip mr-0" title="Activar" onclick="activeRoom('{{ $room->slug }}')"><i class="fa fa-check"></i></button>
 												@endcan
 												@endif
 												@can('rooms.delete')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteRoom('{{ $room->slug }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteRoom('{{ $room->slug }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>
@@ -89,72 +89,15 @@
 </div>
 
 @can('rooms.deactive')
-<div class="modal fade" id="deactiveRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres desactivar este cuarto?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeactiveRoom">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Desactivar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deactiveRoom" form="formDeactiveRoom" method="PUT" title="¿Estás seguro de que quieres desactivar este cuarto?" close="Cancelar" button="Desactivar"></x-modal-simple>
 @endcan
 
 @can('rooms.active')
-<div class="modal fade" id="activeRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres activar este cuarto?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formActiveRoom">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Activar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="activeRoom" form="formActiveRoom" method="PUT" title="¿Estás seguro de que quieres activar este cuarto?" close="Cancelar" button="Activar"></x-modal-simple>
 @endcan
 
 @can('rooms.delete')
-<div class="modal fade" id="deleteRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este cuarto?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeleteRoom">
-					@csrf
-					@method('DELETE')
-					<button type="submit" class="btn btn-primary">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deleteRoom" form="formDeleteRoom" method="DELETE" title="¿Estás seguro de que quieres eliminar este cuarto?" close="Cancelar" button="Eliminar"></x-modal-simple>
 @endcan
 
 @endsection

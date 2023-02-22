@@ -37,8 +37,8 @@
 
 								<div class="form-group col-12">
 									<div class="btn-group" role="group">
-										<button type="submit" class="btn btn-primary" action="harvest">Guardar</button>
-										<a href="{{ route('harvests.index') }}" class="btn btn-secondary">Volver</a>
+										<button type="submit" class="btn btn-primary mr-0" action="harvest">Guardar</button>
+										<a href="{{ route('harvests.index') }}" class="btn btn-secondary mr-0">Volver</a>
 									</div>
 								</div> 
 							</div>

@@ -36,13 +36,13 @@
 							<div class="row">
 								<div class="form-group col-12">
 									<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
-									<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ $harvest->name }}" id="maskHarvest">
+									<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name', $harvest->name) }}" id="maskHarvest">
 								</div>
 								
 								<div class="form-group col-12">
 									<div class="btn-group" role="group">
-										<button type="submit" class="btn btn-primary" action="harvest">Actualizar</button>
-										<a href="{{ route('harvests.index') }}" class="btn btn-secondary">Volver</a>
+										<button type="submit" class="btn btn-primary mr-0" action="harvest">Actualizar</button>
+										<a href="{{ route('harvests.index') }}" class="btn btn-secondary mr-0">Volver</a>
 									</div>
 								</div> 
 							</div>

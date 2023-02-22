@@ -31,7 +31,7 @@
 					<div class="col-12">
 						@can('harvests.create')
 						<div class="text-right">
-							<a href="{{ route('harvests.create') }}" class="btn btn-primary">Agregar</a>
+							<a href="{{ route('harvests.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 						</div>
 						@endcan
 
@@ -57,19 +57,19 @@
 										<td>
 											<div class="btn-group" role="group">
 												@can('harvests.edit')
-												<a href="{{ route('harvests.edit', ['harvest' => $harvest->slug]) }}" class="btn btn-info btn-sm bs-tooltip" title="Editar"><i class="fa fa-edit"></i></a>
+												<a href="{{ route('harvests.edit', ['harvest' => $harvest->slug]) }}" class="btn btn-info btn-sm bs-tooltip mr-0" title="Editar"><i class="fa fa-edit"></i></a>
 												@endcan
 												@if($harvest->state=='Activo')
 												@can('harvests.deactive')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Desactivar" onclick="deactiveHarvest('{{ $harvest->slug }}')"><i class="fa fa-power-off"></i></button>
+												<button type="button" class="btn btn-warning btn-sm bs-tooltip mr-0" title="Desactivar" onclick="deactiveHarvest('{{ $harvest->slug }}')"><i class="fa fa-power-off"></i></button>
 												@endcan
 												@else
 												@can('harvests.active')
-												<button type="button" class="btn btn-success btn-sm bs-tooltip" title="Activar" onclick="activeHarvest('{{ $harvest->slug }}')"><i class="fa fa-check"></i></button>
+												<button type="button" class="btn btn-success btn-sm bs-tooltip mr-0" title="Activar" onclick="activeHarvest('{{ $harvest->slug }}')"><i class="fa fa-check"></i></button>
 												@endcan
 												@endif
 												@can('harvests.delete')
-												<button type="button" class="btn btn-danger btn-sm bs-tooltip" title="Eliminar" onclick="deleteHarvest('{{ $harvest->slug }}')"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-danger btn-sm bs-tooltip mr-0" title="Eliminar" onclick="deleteHarvest('{{ $harvest->slug }}')"><i class="fa fa-trash"></i></button>
 												@endcan
 											</div>
 										</td>
@@ -89,72 +89,15 @@
 </div>
 
 @can('harvests.deactive')
-<div class="modal fade" id="deactiveHarvest" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres desactivar esta cosecha?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeactiveHarvest">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Desactivar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deactiveHarvest" form="formDeactiveHarvest" method="PUT" title="¿Estás seguro de que quieres desactivar esta cosecha?" close="Cancelar" button="Desactivar"></x-modal-simple>
 @endcan
 
 @can('harvests.active')
-<div class="modal fade" id="activeHarvest" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres activar esta cosecha?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formActiveHarvest">
-					@csrf
-					@method('PUT')
-					<button type="submit" class="btn btn-primary">Activar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="activeHarvest" form="formActiveHarvest" method="PUT" title="¿Estás seguro de que quieres activar esta cosecha?" close="Cancelar" button="Activar"></x-modal-simple>
 @endcan
 
 @can('harvests.delete')
-<div class="modal fade" id="deleteHarvest" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar esta cosecha?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">Cancelar</button>
-				<form action="#" method="POST" id="formDeleteHarvest">
-					@csrf
-					@method('DELETE')
-					<button type="submit" class="btn btn-primary">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<x-modal-simple modal="deleteHarvest" form="formDeleteHarvest" method="DELETE" title="¿Estás seguro de que quieres eliminar esta cosecha?" close="Cancelar" button="Eliminar"></x-modal-simple>
 @endcan
 
 @endsection

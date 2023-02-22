@@ -39,43 +39,44 @@
 							<div class="row">
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Foto (Opcional)</label>
-									<input type="file" name="photo" accept="image/*" class="dropify" data-height="125" data-max-file-size="20M" data-allowed-file-extensions="jpg png jpeg web3" data-default-file="{{ image_exist('/admins/img/users/', Auth::user()->photo, true) }}" />
+									<input type="file" name="photo" accept="image/*" class="dropify custom-error" data-height="125" data-max-file-size="20M" data-allowed-file-extensions="jpg png jpeg web3" data-default-file="{{ Auth::user()->photo_url }}" />
+									<div class="custom-error-photo"></div>
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<div class="row">
-										<div class="form-group col-lg-12 col-md-12 col-12">
+										<div class="form-group col-12">
 											<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
-											<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ Auth::user()->name }}">
+											<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name', Auth::user()->name) }}">
 										</div>
 
-										<div class="form-group col-lg-12 col-md-12 col-12">
+										<div class="form-group col-12">
 											<label class="col-form-label">Apellido<b class="text-danger">*</b></label>
-											<input class="form-control @error('lastname') is-invalid @enderror" type="text" name="lastname" required placeholder="Introduzca un apellido" value="{{ Auth::user()->lastname }}">
+											<input class="form-control @error('lastname') is-invalid @enderror" type="text" name="lastname" required placeholder="Introduzca un apellido" value="{{ old('lastname', Auth::user()->lastname) }}">
 										</div>
 									</div> 
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Teléfono<b class="text-danger">*</b></label>
-									<input class="form-control number @error('phone') is-invalid @enderror" type="text" name="phone" required placeholder="Introduzca un teléfono" value="{{ Auth::user()->phone }}">
+									<input class="form-control number @error('phone') is-invalid @enderror" type="text" name="phone" required placeholder="Introduzca un teléfono" value="{{ old('phone', Auth::user()->phone) }}">
 								</div>
 
 								@if(Auth::user()->hasRole(['Trabajador']))
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Fecha de Nacimiento<b class="text-danger">*</b></label>
-									<input class="form-control date @error('birthday') is-invalid @enderror" type="text" name="birthday" required placeholder="Seleccione una fecha de nacimiento" value="{{ Auth::user()->birthday->format('d-m-Y') }}" id="flatpickr">
+									<input class="form-control date @error('birthday') is-invalid @enderror" type="text" name="birthday" required placeholder="Seleccione una fecha de nacimiento" value="{{ old('birthday', Auth::user()->birthday->format('d-m-Y')) }}" id="flatpickr">
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Licencia Ocupacional<b class="text-danger">*</b></label>
-									<input class="form-control @error('license') is-invalid @enderror" type="text" name="license" required placeholder="Introduzca una licencia ocupacional" value="{{ Auth::user()->license }}" id="maskLicense">
+									<input class="form-control @error('license') is-invalid @enderror" type="text" name="license" required placeholder="Introduzca una licencia ocupacional" value="{{ old('license', Auth::user()->license) }}" id="maskLicense">
 								</div>
 								@endif
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
 									<label class="col-form-label">Correo Electrónico</label>
-									<input class="form-control" type="text" disabled value="{{ Auth::user()->email }}">
+									<input class="form-control text-dark" type="text" disabled value="{{ Auth::user()->email }}">
 								</div>
 
 								<div class="form-group col-lg-6 col-md-6 col-12">
@@ -90,8 +91,8 @@
 
 								<div class="form-group col-12">
 									<div class="btn-group" role="group">
-										<button type="submit" class="btn btn-primary" action="profile">Actualizar</button>
-										<a href="{{ route('profile') }}" class="btn btn-secondary">Volver</a>
+										<button type="submit" class="btn btn-primary mr-0" action="profile">Actualizar</button>
+										<a href="{{ route('profile') }}" class="btn btn-secondary mr-0">Volver</a>
 									</div>
 								</div> 
 							</div>
